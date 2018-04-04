@@ -31,7 +31,4 @@ class HodgePodge():
         if not match:
             return None
         r = match.trigger()
-        response = r[0]
-        if r[1]:
-            self.processRequest(response, r[1])
-        return response
+        return r

@@ -51,22 +51,49 @@ def roll(self, context):
 
 
 
-
-
-
-
-
 ## TODO
+
+#### Deploy 1
+
+1. get discord interface up
+2. math module would be cool
+3. shortcut commands (!hp)
+4. start chenagelog
+
+#### Deploy 2
+
+1. Database set up
+2. scoring
+3. personality module
+4. help docs system
+5. jacks conversion modules
+
+#### Deploy 3
+
+1. process processRequest set up
+2. voice channel stuff
+3. proper logging
+
+#### Deploy 4
+
+1. spell search
+2. web interface for permissions tweeks/resets
+
+#### Deploy 5
+
+1. google search
+2. machine learning
+3. dnd Beyond
+4. reminders
+5. hodge podge uses nicknames/personalises output
 
 #### code
 
-1. hodge podge processRequest + erroring
-2. parser module clash handling
-3. formatter/erroring
-4. make better paramater checking system (built into parser?)
+1. parser module clash handling
 
 #### Features
-- voice Channel + Google Module
+- voice Channel
+- Google Module
 - CostCo Bot For Gold / integrate leonbot
 - update personality module to know peoples names and birthdays etc.
 - reminders
@@ -82,7 +109,7 @@ def roll(self, context):
 - update documentation to include default values for objects
 - Add system to handle database failure connection with a hard restart :D
 - Help command for each module (unified help system?? print out from github?)
-- Module to have shortcut commands / system in bot
+- Module to have admin commands in bot
 - Massive Change log
 - binary translator / encryptor
 - clean up heroku to have 2 project, a off test bot (that is on when in dev) and a on hodge podge
@@ -91,8 +118,8 @@ def roll(self, context):
 - error message should be DISTRESSED BEEPING
 - have spell search work with commas
 - math expression evaluator
-- quick commands i.e \hp for hodge podge
-- give option to validate hodge podge
-- let people roll dice with adjectives
+- quick commands i.e !hp for hodge podge
+- give option to validate hodge podge (prepend command)
 - remember command
 - markcov chains -> conversations
+- conversion module (ft->meters)

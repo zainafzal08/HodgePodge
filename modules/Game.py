@@ -1,8 +1,9 @@
-from modules.ModuleDecorator import Trigger
-from modules.Module import Module
+from modules.Module import Module, Trigger
 from utils.Response import Response
 from utils.Formatter import Formatter
-import random
+from utils.misc import *
+import os
+import re
 
 # enforce the parser stuff
 class Game(Module):
@@ -10,42 +11,67 @@ class Game(Module):
         self.formatter = Formatter()
         self.diceTypeRange = (1,1000)
         self.diceNumRange = (1,1000)
-        self.diceCheck = (self.validDice,"I can only handle d%d to d%d"%self.diceTypeRange)
-        self.diceNumCheck = (self.validDiceNum,"I can only handle %d to %d rolls"%self.diceTypeRange)
         super().__init__()
 
-    def validDice(self, d):
-        d = int(d)
-        return d >= self.diceTypeRange[0] and d <= self.diceTypeRange[1]
+    def randomNum(self, l,u):
+    	r = u-l
+    	n = l+int(r * (int.from_bytes(os.urandom(2), byteorder='little')/65536))
+    	return n
 
-    def validDiceNum(self, d):
-        d = int(d)
-        return d >= self.diceNumRange[0] and d <= self.diceNumRange[1]
+    def validate(self, raw, id):
+        if not raw:
+            return None
+        if id == "d":
+            d = int(re.sub('\s+','',raw))
+            if d >= self.diceTypeRange[0] and d <= self.diceTypeRange[1]:
+                return None
+            return "I can only handle d%d to d%d"%self.diceTypeRange
+        elif id == "dn":
+            d = int(re.sub('\s+','',raw))
+            if d >= self.diceNumRange[0] and d <= self.diceNumRange[1]:
+                return None
+            return "I can only handle %d to %d rolls"%self.diceNumRange
+        elif id == "m":
+            m = int(re.sub('\s+','',raw))
+            if m >= -1000000000000 and m <= 1000000000000:
+                return None
+            return "What kind of mod is that?!"
+        return None
 
-    @Trigger('hodge podge.*roll.*a.*d\s*(\-?\d+)',[],["diceCheck"])
+
+    @Trigger('hodge podge.*roll.*d\s*(\-?\d+)\s*([\+\-]\s*\d+)?',[],["d","m"])
     def roll(self, context):
-        diceType = int(context["groups"][0])
+        diceType = context.getNumber(0)
+        mod = context.getNumber(1)
+        modPf = None
+        if mod:
+            modPf = "+" if mod > 0 else ""
         res = Response()
-        result = random.randint(1,diceType)
-        res.textResponce("I Got %d!"%result,context["locationId"],"output")
+        r = self.randomNum(1,diceType)
+        resText = "I Got %d [%d%s%d]!"%(r+mod,r,modPf,mod) if mod else "I Got %d!"%(r)
+        res.textResponce(resText,context.locationId,"output")
         return res
 
-    @Trigger('hodge podge.*roll[^\d]*(\d+)[^d]*d\s*(\-?\d+)',[],["diceNumCheck","diceCheck"])
+    @Trigger('hodge podge.*roll[^\d]*(\d+)[^d]*d\s*(\-?\d+)s?\s*([\+\-]\s*\d+)?',[],["dn","d","m"])
     def multiroll(self, context):
         # set up
         res = Response()
-        diceNum = int(context["groups"][0])
-        diceType = int(context["groups"][1])
+        diceNum = context.getNumber(0)
+        diceType = context.getNumber(1)
+        mod = context.getNumber(2)
+        modPf = None
+        if mod:
+            modPf = "+" if mod > 0 else ""
         # calculate
         components = []
         sum = 0
         for i in range(diceNum):
-            d = random.randint(1,diceType)
+            d = self.randomNum(1,diceType)
             sum += d
             components.append(str(d))
-        rollStr = "I got %d!"%sum
-        componentStr = " (%s)"%("+".join(components))
+        rollStr = "I got %d!"%(sum+mod) if mod else "I got %d!"%sum
+        componentStr = " (%s[%s%d])"%("+".join(components),modPf,mod) if mod else " (%s)"%("+".join(components))
         if len(rollStr) + len(componentStr) < 2000:
             rollStr += componentStr
-        res.textResponce(rollStr,context["locationId"],"out")
+        res.textResponce(rollStr,context.locationId,"out")
         return res

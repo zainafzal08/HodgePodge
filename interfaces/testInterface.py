@@ -14,6 +14,7 @@ class TestInterface():
             ('location (\w+)',self.updateLocation,True,"Location Updated")
         ]
         self.cmdTrigger = "\\"
+        self.members = ["TesterBoy"]
     def run(self):
         print("[ Launching Test Interface...")
         print("[ Ready!")
@@ -24,7 +25,7 @@ class TestInterface():
                 r = self.interfaceCommands(l[1:])
                 print("[ %s"%r)
             else:
-                res = self.boy.talk(l,self.level,self.location)
+                res = self.boy.talk(l,self.level,self.location, self.members)
                 if res:
                     print("@ %s >> %s"%(res.getTextTarget(), res.getTextMsg()))
             if self.running:

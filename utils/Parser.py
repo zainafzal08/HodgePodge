@@ -7,6 +7,7 @@ class Context():
         self.locationId = None
         self.raw = None
         self.userRoles = []
+        self.members = []
     def getNumber(self, i):
         e = self.groups[i]
         if e:
@@ -14,6 +15,8 @@ class Context():
         return None
     def getString(self, i):
         return self.groups[i]
+    def getMembers(self):
+        return self.members
 
 class Match():
     def __init__(self, m, rgx, acs,f,grpIds):
@@ -58,7 +61,7 @@ class Parser():
                 return True
         return False
 
-    def parse(self, message,roles,locationId):
+    def parse(self, message, roles, locationId ,members):
         m = message.lower()
         for trigger in self.triggers:
             s = trigger.regex.search(m)
@@ -67,6 +70,7 @@ class Parser():
                 trigger.context.raw = message
                 trigger.context.locationId = locationId
                 trigger.context.userRoles = roles
+                trigger.context.members = members
                 return trigger
             else:
                 continue

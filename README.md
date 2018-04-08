@@ -55,29 +55,34 @@ def roll(self, context):
 
 #### Deploy 1
 
-1. get discord interface up
-2. math module would be cool
-3. shortcut commands (!hp)
-4. start chenagelog
+- [X] get discord interface up
+- [X] math module would be cool
+- [X] start changelog
+- [X] pick someone random in the chat
 
 #### Deploy 2
 
-1. Database set up
-2. scoring
-3. personality module
-4. help docs system
-5. jacks conversion modules
+- [] Database set up
+- [] scoring
+- [] personality module
+- [] help docs system
+- [] jacks conversion modules
+- [] shortcut commands (!hp)
+- [] rss feed / twitter feed stuff / github
+- [] web interface for permissions tweeks/resets
 
 #### Deploy 3
 
 1. process processRequest set up
 2. voice channel stuff
 3. proper logging
+4. command chaining with "then"
+- [] set up system where a commands can be run after [x] seconds. (timing module)
+- [] bomb message
 
 #### Deploy 4
 
 1. spell search
-2. web interface for permissions tweeks/resets
 
 #### Deploy 5
 
@@ -123,3 +128,7 @@ def roll(self, context):
 - remember command
 - markcov chains -> conversations
 - conversion module (ft->meters)
+- pick someone random in the chat
+- enemy tracking in dnd games
+- use "then" to chain commands
+- bomb message, any message with a "!!kill5" will be deleted by hodge podge in 5 seconds

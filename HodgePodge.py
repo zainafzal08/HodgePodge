@@ -1,16 +1,20 @@
 from utils.Response import Response
 from utils.Parser import Parser
 from utils.Response import Response
+from utils.Database import Db
+
 import inspect
 
 class HodgePodge():
-    def __init__(self):
+    def __init__(self, dbConnString):
         self.modules = []
         self.parser = Parser()
+        self.db = Db(dbConnString)
 
     def attachModule(self, m):
         self.modules.append(m)
         m.connectParser(self.parser)
+        m.connectDb(self.db)
         self.flushModule(m)
 
     # ok now i admit. this is a hacky way to do this **BUT**
@@ -25,9 +29,9 @@ class HodgePodge():
     def processRequest(response, request):
         pass
 
-    def talk(self, message, roles, locationId):
+    def talk(self, message, roles, locationId, members):
         # Doesn't handle any clashes, overrides.
-        match = self.parser.parse(message,roles,locationId)
+        match = self.parser.parse(message,roles,locationId, members)
         if not match:
             return None
         r = match.trigger()

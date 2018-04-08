@@ -11,12 +11,7 @@ class Game(Module):
         self.formatter = Formatter()
         self.diceTypeRange = (1,1000)
         self.diceNumRange = (1,1000)
-        super().__init__()
-
-    def randomNum(self, l,u):
-    	r = u-l
-    	n = l+int(r * (int.from_bytes(os.urandom(2), byteorder='little')/65536))
-    	return n
+        super().__init__("Game")
 
     def validate(self, raw, id):
         if not raw:
@@ -38,7 +33,6 @@ class Game(Module):
             return "What kind of mod is that?!"
         return None
 
-
     @Trigger('hodge podge.*roll.*d\s*(\-?\d+)\s*([\+\-]\s*\d+)?',[],["d","m"])
     def roll(self, context):
         diceType = context.getNumber(0)
@@ -47,7 +41,7 @@ class Game(Module):
         if mod:
             modPf = "+" if mod > 0 else ""
         res = Response()
-        r = self.randomNum(1,diceType)
+        r = randomNum(1,diceType)
         resText = "I Got %d [%d%s%d]!"%(r+mod,r,modPf,mod) if mod else "I Got %d!"%(r)
         res.textResponce(resText,context.locationId,"output")
         return res
@@ -66,7 +60,7 @@ class Game(Module):
         components = []
         sum = 0
         for i in range(diceNum):
-            d = self.randomNum(1,diceType)
+            d = randomNum(1,diceType)
             sum += d
             components.append(str(d))
         rollStr = "I got %d!"%(sum+mod) if mod else "I got %d!"%sum
@@ -74,4 +68,21 @@ class Game(Module):
         if len(rollStr) + len(componentStr) < 2000:
             rollStr += componentStr
         res.textResponce(rollStr,context.locationId,"out")
+        return res
+
+    @Trigger('pls',[],[])
+    def multiroll(self, context):
+        res = Response()
+        lines = []
+        db = self.getDb()
+        request = {
+            "TABLE": "PERMISSIONS",
+            "GET": ["MODULE","COMMAND","ROLES"],
+            "WHERE": {
+                "MODULE" : "GAME",
+                "COMMAND": "roll"
+            },
+            "DUP": False
+        }
+        res.textResponce("\n".join(lines),context.locationId,"out")
         return res

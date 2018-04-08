@@ -19,7 +19,9 @@ class Trigger():
         self.access = access
         self.initalised = False
         self.grpIds = grpIds
-    def formPermissionReq():
+    
+    def formPermissionReq(self):
+        raise Exception("Code this up fuckface")
 
     def __call__(self,f,**args):
         def wrapped_f(*args):

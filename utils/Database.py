@@ -78,6 +78,11 @@ class Db():
             return True
         return False
 
+    # registers a new table
+    # or clears existing table
+    def register(self, r):
+        raise Exception("CODE THIS UP FUCKBOY ZAIN")
+
     def edit(self, r):
         # basic params
         c = self.conn.cursor()

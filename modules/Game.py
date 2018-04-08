@@ -73,7 +73,7 @@ class Game(Module):
     @Trigger('pls',[],[])
     def multiroll(self, context):
         res = Response()
-        lines = []
+        lines = ["lmao maybe code it up fuckface"]
         db = self.getDb()
         request = {
             "TABLE": "PERMISSIONS",

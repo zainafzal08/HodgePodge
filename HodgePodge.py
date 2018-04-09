@@ -29,9 +29,9 @@ class HodgePodge():
     def processRequest(response, request):
         pass
 
-    def talk(self, message, roles, locationId, members):
+    def talk(self, message, user, locationId, members):
         # Doesn't handle any clashes, overrides.
-        match = self.parser.parse(message,roles,locationId, members)
+        match = self.parser.parse(message,user,locationId, members)
         if not match:
             return None
         r = match.trigger()

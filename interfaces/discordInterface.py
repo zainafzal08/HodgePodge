@@ -31,13 +31,16 @@ async def on_message(message):
     location = message.channel.id
     raw = message.content
     roles = list(map(lambda x: x.name, message.author.roles))
+    author = User(message.author.id,message.author.name)
+    author.addRoles(roles)
     members=[]
     myself = find(lambda x: x.name == "Hodge-Podge",message.server.members).id
     for member in message.server.members:
         if member.id == myself:
             continue
         members.append(User(member.id,"<@%s>"%member.id))
-    res = boy.talk(raw,roles,location,members)
+
+    res = boy.talk(raw,author,location,members)
     if not res:
         return
     msg = res.getTextMsg()

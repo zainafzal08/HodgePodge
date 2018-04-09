@@ -78,10 +78,40 @@ class Db():
             return True
         return False
 
+    def tableExists(self):
+        raise Exception("Table Already Exists!")
     # registers a new table
     # or clears existing table
     def register(self, r):
-        raise Exception("CODE THIS UP FUCKBOY ZAIN")
+        r = {
+            "TABLE": "PERMISSIONS",
+            "FIELDS": {
+                "MODULE": "TEXT",
+                "FUNCTION": "TEXT",
+                "PERMISSIONS": "TEXT"
+            },
+            "EXISTS": None
+        }
+        if "TABLE" not in r or "FIELDS" not in r:
+            raise Exception("No Table or Field Specified")
+        if len(r["FIELDS"].keys()) < 1:
+            raise Exception("No Fields Specified")
+        table = r["TABLE"]
+        fields = ",".join(list(map(lambda x: "%s %s"%(x,r["FIELDS"][x]), r["FIELDS"])))
+        exists = r.get("EXISTS",self.tableExists)
+        c = self.conn.cursor()
+        # Check if table exists and handle
+        q = "SELECT EXISTS ( SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = '?')"
+        c.execute(q,table)
+        tableExists = c.fetchone()
+        if tableExists:
+            if exists:
+                exists()
+            return
+        # Register table
+        q = "CREATE TABLE %s(%s)"%(table,fields)
+        c.execute(query)
+        self.conn.commit()
 
     def edit(self, r):
         # basic params

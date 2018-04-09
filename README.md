@@ -95,6 +95,7 @@ def roll(self, context):
 #### code
 
 1. parser module clash handling
+2. fix role id generation to not be predictable and hackable lol
 
 #### Features
 - voice Channel

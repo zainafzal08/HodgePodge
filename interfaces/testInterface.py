@@ -9,12 +9,13 @@ class TestInterface():
         self.running = False
         self.location = "testingTerminal"
         self.cmds = [
-            ('level (\d+)', self.updateLevel, True,"Level Updated"),
+            ('role (\w+)', self.addRole, True,"Roles Updated"),
             ('quit', self.exit, False,"Goodbye"),
             ('location (\w+)',self.updateLocation,True,"Location Updated")
         ]
         self.cmdTrigger = "\\"
-        self.members = ["TesterBoy"]
+        self.me = User("TesterBoy","TesterBoy")
+        self.members = [self.me]
     def run(self):
         print("[ Launching Test Interface...")
         print("[ Ready!")
@@ -25,7 +26,7 @@ class TestInterface():
                 r = self.interfaceCommands(l[1:])
                 print("[ %s"%r)
             else:
-                res = self.boy.talk(l,self.level,self.location, self.members)
+                res = self.boy.talk(l,self.me,self.location, self.members)
                 if res:
                     print("@ %s >> %s"%(res.getTextTarget(), res.getTextMsg()))
             if self.running:
@@ -44,9 +45,8 @@ class TestInterface():
             self.running = False
             return None
 
-    def updateLevel(self, l):
-        if l:
-            self.level = l
+    def addRole(self, r):
+        self.me.addRole(r)
 
     def updateLocation(self, loc):
         if loc:

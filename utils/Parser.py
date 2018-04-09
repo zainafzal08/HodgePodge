@@ -6,7 +6,7 @@ class Context():
         self.groups = []
         self.locationId = None
         self.raw = None
-        self.userRoles = []
+        self.user = None
         self.members = []
     def getNumber(self, i):
         e = self.groups[i]
@@ -17,12 +17,13 @@ class Context():
         return self.groups[i]
     def getMembers(self):
         return self.members
+    def getUser(self):
+        return self.users
 
 class Match():
-    def __init__(self, m, rgx, acs,f,grpIds):
+    def __init__(self, m, rgx, f,grpIds):
         self.module = m
         self.regex = re.compile(rgx)
-        self.access = acs
         self.function = f
         self.groupId = grpIds
         self.context = Context()
@@ -49,11 +50,12 @@ class Parser():
         self.triggers = []
         pass
 
-    def register(self, m, rgx, acs, f, grpIds):
-        match = Match(m,rgx,acs, f, grpIds)
+    def register(self, m, rgx, f, grpIds):
+        match = Match(m,rgx, f, grpIds)
         self.triggers.append(match)
 
-    def permission(self, roles, access):
+    def permission(self, user, trigger):
+        raise Exception("QUERY THE DB DIPSHIT")
         if len(access) == 0:
             return True
         for r in roles:
@@ -61,15 +63,15 @@ class Parser():
                 return True
         return False
 
-    def parse(self, message, roles, locationId ,members):
+    def parse(self, message, author, locationId ,members):
         m = message.lower()
         for trigger in self.triggers:
             s = trigger.regex.search(m)
-            if s and self.permission(roles,trigger.access):
+            if s and self.permission(author, trigger):
                 trigger.context.groups = s.groups()
                 trigger.context.raw = message
                 trigger.context.locationId = locationId
-                trigger.context.userRoles = roles
+                trigger.context.user = author
                 trigger.context.members = members
                 return trigger
             else:

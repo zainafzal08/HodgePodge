@@ -2,11 +2,116 @@ import psycopg2
 import urllib.parse as urlparse
 import os
 
-# Ok frankly i should use sqlalchemy
-# or really like this is fine but should be
-# less shit, like postgres supports removing
-# removeDuplicates and has a built in "get all"
-# function like chill zain
+# Create table or entry
+# handle entry exists, table exists
+# handle table doesn't exist but attempted entry
+
+# jesus this is getting compilcated
+# can i just use sql alchemy?
+class createRequest():
+    def __init__(self, conn, type, table):
+        self.conn = conn
+        self.table = table
+        self.q = None
+        self.type = type
+        self.validTriggers = {
+            "EXISTS": ["NOTHING","DIE","RUN","DUP","CLEAR"],
+            "NO_TABLE": ["NOTHING","DIE","RUN","FORCE"],
+        }
+        self.handle = {
+            "EXISTS": self.dieExists(),
+            "NO_TABLE": self.dieNoTable()
+        }
+
+    def nothing(self):
+        pass
+    def dieExists(self):
+        raise Exception("Request Failed: Entry/Table exists")
+    def dieNoTable(self):
+        raise Exception("Request Failed: Table does not exist")
+    def push(self):
+        self.q = self.q%self.filters()
+        c = self.conn.cursor()
+        c.execute(self.q)
+        self.conn.commit()
+
+    # todo
+    def forcePushEntry(self):
+        pass
+    def filters(self):
+        pass
+    def where(self, filters):
+        pass
+    def tableExists(self):
+        pass
+    def entryExists(self):
+        pass
+    def replace(self):
+
+    # replace entry
+    def
+
+
+    def on(self, trigger, response, *args):
+        if trigger not in validTriggers:
+            raise Exception("Unknown Trigger '%s'"%trigger)
+        if response not in validTriggers[trigger]:
+            raise Exception("Unknown Response '%s' for Trigger %s"%(response,trigger))
+        # invalid triggers
+        if trigger == "EXISTS" and response == "DUP" and self.type == "TABLE":
+            raise Exception("Invalid Response: Can Not Create Duplicate Table")
+        if trigger == "EXISTS":
+            if response == "NOTHING":
+                self.handle["EXISTS"] = self.nothing()
+            elif response == "RUN":
+                self.handle["EXISTS"] = args[0]
+            elif response == "DIE":
+                self.handle["EXISTS"] = self.dieExists()
+            elif response == "DUP":
+                self.handle["EXISTS"] = self.push()
+            elif response == "REPLACE":
+                self.handle["EXISTS"] = self.replace()
+            elif response == "CLEAR":
+                self.handle["EXISTS"] = self.clear()
+            else:
+                raise Exception("Internal Error: Attempt to set a unknown response")
+        elif trigger == "NO_TABLE":
+            if response == "NOTHING":
+                self.handle["NO_TABLE"] = self.nothing()
+            elif response == "RUN":
+                self.handle["NO_TABLE"] = args[0]
+            elif response == "DIE":
+                self.handle["NO_TABLE"] = self.dieNoTable()
+            elif response == "FORCE":
+                self.handle["NO_TABLE"] = self.forcePushEntry()
+            else:
+                raise Exception("Internal Error: Attempt to set a unknown response")
+    def execute():
+        # check
+        tble = self.tableExists()
+        if(self.type == "TABLE" and tble):
+            self.handle["EXISTS"]()
+            return
+        elif(self.type == "ENTRY" and not tble):
+            self.handle["NO_TABLE"]()
+            return
+        elif(self.type == "ENTRY" and self.entryExists()):
+            self.handle["EXISTS"]()
+            return
+        # do it
+        self.push()
+
+class findRequest():
+    def __init__(self, conn):
+        self.conn = conn
+        self.q = None
+    def query(self, q, *args):
+        c = self.conn.cursor()
+        c.execute(q%args)
+        a = c.fetchall()
+        return a
+    def execute():
+        pass
 
 class Db():
     def __init__(self, conn):
@@ -23,189 +128,39 @@ class Db():
         port = url.port
         self.conn = psycopg2.connect(dbname=dbname,user=user,password=password,host=host,port=port)
 
-    def removeDuplicates(self, l):
-        result = []
-        for e in l:
-            if e not in result:
-                result.append(e)
-        return result
+    def ensure(self,f,l,m):
+        for i,e in l:
+            if not f(e):
+                raise Exception("Element %d of list is invalid, %s"m)
 
-    def formStrictFilters(self, r, query, caseIns):
-        if "WHERE" not in r:
-            return query
-        elif len(r["WHERE"].keys()) < 1:
-            return query
-
-        query += " WHERE "
-        for i,fil in enumerate(r["WHERE"].keys()):
-            if i == 0 and caseIns:
-                query += (" UPPER(%s) = %s"%(fil,r["WHERE"][fil].upper()))
-            elif caseIns:
-                query += (" AND UPPER(%s) = %s"%(fil,r["WHERE"][fil].upper()))
-            elif i == 0:
-                query += (" %s = %s"%(fil,r["WHERE"][fil]))
-            else:
-                query += (" AND %s = %s"%(fil,r["WHERE"][fil]))
-        return query
-
-    def formSearchFilters(self, r, query, caseIns):
-        if "WHERE" not in r:
-            return (query,[])
-        elif len(r["WHERE"].keys()) < 1:
-            return (query,[])
-        query += " WHERE "
-        for i,fil in enumerate(r["WHERE"].keys()):
-            if i == 0 and caseIns:
-                query += (" UPPER(%s) LIKE %%s"%fil)
-                params.append(r["WHERE"][fil].upper())
-            elif caseIns:
-                query += (" AND UPPER(%s) LIKE %%s"%fil)
-                params.append(r["WHERE"][fil].upper())
-            elif i == 0:
-                query += (" %s LIKE %%s"%fil)
-                params.append(r["WHERE"][fil])
-            else:
-                query += (" AND %s LIKE %%s"%fil)
-                params.append(r["WHERE"][fil])
-        return (query,params)
-
-    def exists(self, table, fields, r):
-        query = "SELECT %s FROM %s"%(fields, table)
-        query = formStrictFilters(r,query,True)
-        c = self.conn.cursor()
-        c.execute(query)
-        if c.fetchone():
-            return True
-        return False
-
-    def tableExists(self):
-        raise Exception("Table Already Exists!")
-    # registers a new table
-    # or clears existing table
-    def register(self, r):
-        r = {
-            "TABLE": "PERMISSIONS",
-            "FIELDS": {
-                "MODULE": "TEXT",
-                "FUNCTION": "TEXT",
-                "PERMISSIONS": "TEXT"
-            },
-            "EXISTS": None
-        }
-        if "TABLE" not in r or "FIELDS" not in r:
-            raise Exception("No Table or Field Specified")
-        if len(r["FIELDS"].keys()) < 1:
-            raise Exception("No Fields Specified")
-        table = r["TABLE"]
-        fields = ",".join(list(map(lambda x: "%s %s"%(x,r["FIELDS"][x]), r["FIELDS"])))
-        exists = r.get("EXISTS",self.tableExists)
-        c = self.conn.cursor()
-        # Check if table exists and handle
-        q = "SELECT EXISTS ( SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = '?')"
-        c.execute(q,table)
-        tableExists = c.fetchone()
-        if tableExists:
-            if exists:
-                exists()
-            return
-        # Register table
-        q = "CREATE TABLE %s(%s)"%(table,fields)
-        c.execute(query)
-        self.conn.commit()
-
-    def edit(self, r):
-        # basic params
-        c = self.conn.cursor()
-        force = r.get("FORCE",False)
-        ret = r.get("RETURN","NEW")
-        # get query Basics
-        if "TABLE" not in r or "SET" not in r:
-            raise Exception("No Table or Field Specified")
-        fields = map(lambda x: x.upper(), r["SET"])
-        fields = ", ".join(fields)
-        table = r["TABLE"]
-        exists = self.exists(table,fields,r)
-        old = None
-        new = None
-        if exists:
-            for i,f in enumerate(map(lambda x: x.upper(), r["SET"])):
-                fieldPairs.append("%s = %s"%(f,r["VALUE"][i]))
-            fieldPairs = ",".join(fieldPairs)
-            query = "UPDATE %s SET %s"%(table,fieldPairs)
-            query = formStrictFilters(r,query,True)
-            oldQuery = "SELECT * FROM %s"%table
-            oldQuery = formStrictFilters(r,oldQuery,True)
-            old = c.execute(oldQuery)
-            c.execute(query)
-            self.conn.commit()
-        elif not exists and force:
-            cols = map(lambda x: x.upper(), r["SET"])
-            query = "INSERT INTO %s (%s) VALUES (%s)"%(table,", ".join(cols),", ".join(r["VALUES"]))
-            self.c.execute(query)
-            self.conn.commit()
-            newQuery = "SELECT * FROM %s"%table
-            newQuery = formStrictFilters(r,newQuery,True)
-            new = c.execute(newQuery)
+    def create(self, t, n, f):
+        t = t.upper()
+        q = ""
+        if t == "TABLE":
+            self.ensure(lambda x: hasattr(x,'__iter__') and len(x) == 2, f, "Must be 2 item itertable object of (fieldName,fieldType)")
+            q = "CREATE TABLE %s(%s)"%(n,",".join(["%s %s"%(x[0],x[1]) for x in f]))
+            q += "%s"
+        elif t == "ENTRY":
+            self.ensure(lambda x: type(x) is str, f, "Must be string")
+            q = "INSERT INTO TABLE %s VALUES(%s)"%(n,",".join(f))
+            q += "%s"
         else:
-            raise Exception("No Matching Entry To Update, Use force=true To Create Entry")
+            raise Exception("%s is a invalid creation type"%t)
+        r = createRequest(self.conn,t,n)
+        r.q = q
+        return r
 
-        if ret == "OLD":
-            return old
+    def find(self, t, n):
+        t = t.upper()
+        q = ""
+        if t == "ONE":
+            q = "SELECT * FROM %s"%n
+            q += "%s LIMIT 1
+        elif t == "ALL":
+            q = "SELECT * FROM %s"%n
+            q += "%s"
         else:
-            return new
-
-    def search(self, r):
-        # basic params
-        c = self.conn.cursor()
-        caseIns = r.get("CASE_INS",True)
-        dups = r.get("DUPS",False)
-
-        # form base query
-        if "TABLE" not in r or "GET" not in r:
-            raise Exception("No Table or Field Specified")
-        fields = map(lambda x: x.upper(), r["GET"])
-        fields = ", ".join(fields)
-        table = r["TABLE"]
-        query = "SELECT %s FROM %s"%(fields, table)
-        params = None
-
-        # form filters
-        filters = self.formSearchFilters(r,query, caseIns)
-        query = filters[0]
-        params = filters[1]
-
-        # Execute
-        if params != None:
-            c.execute(query,tuple(params))
-        else:
-            c.execute(query)
-        results = c.fetchAll()
-        if not dups:
-            results = removeDuplicates(results)
-        return results
-
-    # NOT TO BE USED FOR USER INPUT
-    # USE SEARCH BECAUSE IT SANTISES INPUT
-    def get(self, r):
-        # basic params
-        c = self.conn.cursor()
-        caseIns = r.get("CASE_INS",True)
-        dups = r.get("DUPS",False)
-
-        # form base query
-        if "TABLE" not in r or "GET" not in r:
-            raise Exception("No Table or Field Specified")
-        fields = map(lambda x: x.upper(), r["GET"])
-        fields = ", ".join(fields)
-        table = r["TABLE"]
-        query = "SELECT %s FROM %s"%(fields, table)
-
-        # form filters
-        query = self.formStrictFilters(query, caseIns)
-
-        # Execute
-        c.execute(query)
-        results = c.fetchAll()
-        if not dups:
-            results = removeDuplicates(results)
-        return results
+            raise Exception("%s is a invalid find type"%t)
+        r = findRequest(conn,t,n)
+        r.q = q
+        return r

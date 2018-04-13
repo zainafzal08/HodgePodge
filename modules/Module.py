@@ -21,30 +21,15 @@ class Trigger():
         self.grpIds = grpIds
 
     def createPermissions(self, m):
-        r = {
-            "TABLE": "PERMISSIONS",
-            "FIELDS": {
-                "MODULE": "TEXT",
-                "FUNCTION": "TEXT",
-                "PERMISSIONS": "TEXT"
-            },
-            "EXISTS": None
-        }
-        m.getDb().register(r)
+        fields = [
+                ("MODULE","TEXT"),
+                ("FUNCTION","TEXT"),
+                ("PERMISSIONS","TEXT")
+            ]
+        raise Exception("NANI? DATABASE-SAN?")
 
     def registerPermissions(self, m, fn, access):
-        access = ",".join(list(map(lambda x: x.getId())))
-        r = {
-            "TABLE": "PERMISSIONS",
-            "SET": ["MODULE","FUNCTION","PERMISSIONS"],
-            "WHERE": {
-                "MODULE": m.name,
-                "FUNCTION": fn
-            },
-            "VALUE": [m.name,fn,access],
-            "FORCE": True
-        }
-        m.getDb().edit(r)
+        raise Exception("NANI? DATABASE-SAN?")
 
     def __call__(self,f,**args):
         def wrapped_f(*args):

@@ -33,7 +33,7 @@ class Game(Module):
             return "What kind of mod is that?!"
         return None
 
-    @Trigger('hodge podge.*roll.*d\s*(\-?\d+)\s*([\+\-]\s*\d+)?',[],["d","m"])
+    @Trigger('hodge podge.*roll.*d\s*(\-?\d+)\s*([\+\-]\s*\d+)?',["d","m"])
     def roll(self, context):
         diceType = context.getNumber(0)
         mod = context.getNumber(1)
@@ -46,7 +46,7 @@ class Game(Module):
         res.textResponce(resText,context.locationId,"output")
         return res
 
-    @Trigger('hodge podge.*roll[^\d]*(\d+)[^d]*d\s*(\-?\d+)s?\s*([\+\-]\s*\d+)?',[],["dn","d","m"])
+    @Trigger('hodge podge.*roll[^\d]*(\d+)[^d]*d\s*(\-?\d+)s?\s*([\+\-]\s*\d+)?',["dn","d","m"])
     def multiroll(self, context):
         # set up
         res = Response()
@@ -68,21 +68,4 @@ class Game(Module):
         if len(rollStr) + len(componentStr) < 2000:
             rollStr += componentStr
         res.textResponce(rollStr,context.locationId,"out")
-        return res
-
-    @Trigger('pls',[],[])
-    def multiroll(self, context):
-        res = Response()
-        lines = ["lmao maybe code it up fuckface"]
-        db = self.getDb()
-        request = {
-            "TABLE": "PERMISSIONS",
-            "GET": ["MODULE","COMMAND","ROLES"],
-            "WHERE": {
-                "MODULE" : "GAME",
-                "COMMAND": "roll"
-            },
-            "DUP": False
-        }
-        res.textResponce("\n".join(lines),context.locationId,"out")
         return res

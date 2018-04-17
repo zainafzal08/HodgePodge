@@ -19,7 +19,7 @@ class Utility(Module):
                 return "Much like my opinion of you, that expression is malformed"
         return None
 
-    @Trigger('hodge podge.*pick someone',[],[])
+    @Trigger('hodge podge.*pick someone',[])
     def pick(self, context):
         members = context.getMembers()
         target = pick(members)
@@ -28,7 +28,7 @@ class Utility(Module):
         res.textResponce(resText,context.locationId,"output")
         return res
 
-    @Trigger('hodge podge calc(ulate)? ([\+\-\d\*\/e\^\(\)\s]*)',[],[None,"m"])
+    @Trigger('hodge podge calc(ulate)? ([\+\-\d\*\/e\^\(\)\s]*)',[None,"m"])
     def calc(self, context):
         expr = re.sub('\s+','',context.groups[1])
         expr = eval(expr)

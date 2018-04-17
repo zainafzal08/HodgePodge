@@ -30,7 +30,11 @@ class HodgePodge():
         pass
 
     def talk(self, message, user, locationId, members):
-        # Doesn't handle any clashes, overrides.
+        # If there is a member we don't know of, make a entry for them
+        raise Exception("Add new users to users database")
+        # Get user objects for all members present
+        raise Exception("Retrive users by their secret keys etc.")
+
         match = self.parser.parse(message,user,locationId, members)
         if not match:
             return None

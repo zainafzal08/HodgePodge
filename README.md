@@ -62,14 +62,15 @@ def roll(self, context):
 
 #### Deploy 2
 
-- [] Database set up
-- [] scoring
-- [] personality module
-- [] help docs system
-- [] jacks conversion modules
-- [] shortcut commands (!hp)
-- [] rss feed / twitter feed stuff / github
-- [] web interface for permissions tweeks/resets
+- [ ] Database set up
+- [ ] scoring
+- [ ] personality module
+- [ ] help docs system
+- [ ] jacks conversion modules
+- [ ] shortcut commands (!hp)
+- [ ] rss feed / twitter feed stuff / github
+- [ ] web interface for permissions tweeks/resets
+  - perhaps don't rely on interface for permissions, just give each user a id and we db roles  
 
 #### Deploy 3
 

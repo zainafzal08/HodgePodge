@@ -14,29 +14,15 @@ class Module():
 
 
 class Trigger():
-    def __init__(self,regex,access,grpIds):
+    def __init__(self,regex,grpIds):
         self.regex = regex
-        self.access = access
         self.initalised = False
         self.grpIds = grpIds
-
-    def createPermissions(self, m):
-        fields = [
-                ("MODULE","TEXT"),
-                ("FUNCTION","TEXT"),
-                ("PERMISSIONS","TEXT")
-            ]
-        raise Exception("NANI? DATABASE-SAN?")
-
-    def registerPermissions(self, m, fn, access):
-        raise Exception("NANI? DATABASE-SAN?")
 
     def __call__(self,f,**args):
         def wrapped_f(*args):
             if not self.initalised:
                 args[0].getParser().register(args[0],self.regex,f.__name__,self.grpIds)
-                self.createPermissions(args[0])
-                self.registerPermissions(args[0],f.__name__,self.access)
                 self.initalised = True
             else:
                 return f(*args)

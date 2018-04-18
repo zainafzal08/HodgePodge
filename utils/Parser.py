@@ -46,8 +46,9 @@ class Match():
             return res
 
 class Parser():
-    def __init__(self):
+    def __init__(self, daddy):
         self.triggers = []
+        self.daddy = daddy
         pass
 
     def register(self, m, rgx, f, grpIds):
@@ -55,12 +56,9 @@ class Parser():
         self.triggers.append(match)
 
     def permission(self, user, trigger):
-        raise Exception("QUERY THE DB DIPSHIT")
-        if len(access) == 0:
+        # ask Daddy if user has permission
+        if daddy.pweaseTwigger(trigger.m, trigger.function, user):
             return True
-        for r in roles:
-            if r in access:
-                return True
         return False
 
     def parse(self, message, author, locationId ,members):

@@ -2,19 +2,21 @@ from utils.Response import Response
 from utils.Parser import Parser
 from utils.Response import Response
 from utils.Database import Db
-
+from utils.Daddy import Daddy
 import inspect
 
 class HodgePodge():
     def __init__(self, dbConnString):
         self.modules = []
-        self.parser = Parser()
         self.db = Db(dbConnString)
+        self.daddy = Daddy(self.db)
+        self.parser = Parser(self.daddy)
 
     def attachModule(self, m):
         self.modules.append(m)
         m.connectParser(self.parser)
         m.connectDb(self.db)
+        m.__daddy__ = self.daddy
         self.flushModule(m)
 
     # ok now i admit. this is a hacky way to do this **BUT**
@@ -30,11 +32,9 @@ class HodgePodge():
         pass
 
     def talk(self, message, user, locationId, members):
-        # If there is a member we don't know of, make a entry for them
-        raise Exception("Add new users to users database")
-        # Get user objects for all members present
-        raise Exception("Retrive users by their secret keys etc.")
-
+        members = self.daddy.verify(members)
+        if len(members) == 0:
+            return None
         match = self.parser.parse(message,user,locationId, members)
         if not match:
             return None

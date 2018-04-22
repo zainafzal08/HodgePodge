@@ -135,3 +135,4 @@ def roll(self, context):
 - enemy tracking in dnd games
 - use "then" to chain commands
 - bomb message, any message with a "!!kill5" will be deleted by hodge podge in 5 seconds
+- Feature to hide messages that are tagged as spoilers till someone clicks on them. 

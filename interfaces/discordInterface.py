@@ -28,6 +28,7 @@ async def on_message(message):
     # ignore bots
     if(message.author.bot):
         return
+    # replace with lazy user registeration
     location = message.channel.id
     raw = message.content
     roles = list(map(lambda x: x.name, message.author.roles))

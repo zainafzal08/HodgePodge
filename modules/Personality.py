@@ -20,7 +20,11 @@ class Personality(Module):
             "im gonna cry": "Don't cry! I love you afterall :smile:",
             "^\s*crying\s*$": "Don't cry! I love you afterall :smile:",
             "bye hodge podge": "Goodbye! I hope i get to talk to you again :heart:",
-            "hodge podge when is your birthday": "Janurary 6th!"
+            "hodge podge when is your birthday": "Janurary 6th!",
+            "69": "_niiice_",
+            "420": "_ayyyyy_",
+            "i love you too hodge podge": "<3 :heart:",
+            "nut": "it push you backward"
         }
         self.superAdminTriggers = {
             "love our robot son": "I love you too dad :heart:",

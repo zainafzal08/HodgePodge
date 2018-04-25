@@ -3,7 +3,6 @@ from utils.Parser import Parser
 from utils.Response import Response
 from utils.Database import Db
 from utils.Daddy import Daddy
-
 import inspect
 
 class HodgePodge():
@@ -32,34 +31,9 @@ class HodgePodge():
     def processRequest(response, request):
         pass
 
-    def doYouKnow(self, id):
-        return self.daddy.knows(id)
-
-    # Registers a new user with hodge podge
-    def newUser(self, id, display, **kargs):
-        if self.daddy.knows(id):
-            raise Exception("User already exists in database")
-        self.daddy.meet(id,display,kargs)
-
-    # registers a new role with hodge podge
-    def newRole(self, id, display, **kargs):
-        if self.daddy.knowsRole(id):
-            raise Exception("Role already exists in database")
-        self.daddy.newRole(id,display,kargs)
-
-    # gives user role
-    def giveRole(self, userId, roleId):
-        if not self.daddy.knowsRole(roleId):
-            raise Exception("Unknown Role")
-        if not self.daddy.knows(userId):
-            raise Exception("Unknown User")
-        self.daddy.pwease(userId,roleId)
-
     def talk(self, message, user, locationId, members):
-        user = self.daddy.getUser(user)
-        members = self.daddy.getUsers(members)
-        # manage users/members
-        if len(members) == 0 and user == None:
+        members = self.daddy.verify(members)
+        if len(members) == 0:
             return None
         match = self.parser.parse(message,user,locationId, members)
         if not match:

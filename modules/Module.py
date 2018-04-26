@@ -1,19 +1,4 @@
 class Module():
-<<<<<<< HEAD
-    def __init__(self, name):
-        self.name = name
-
-
-    def blankRes(self):
-        res = {}
-        res["output"] = []
-        res["channel_output_target"] = ""
-        res["channel_output"] = ""
-        return res
-
-    def trigger(self, message, requestLevel):
-        return self.blankRes()
-=======
     def __init__(self,name):
         self.name = name
         # god help me i hope this doesn't result in a exploit
@@ -28,7 +13,6 @@ class Module():
         self.__db__ = db
     def getDb(self):
         return self.__db__
-
 
 class Trigger():
     def __init__(self,regex,grpIds):
@@ -45,4 +29,3 @@ class Trigger():
             else:
                 return f(*args)
         return wrapped_f
->>>>>>> 9dc43570a5b796e49e1942c78d9499f802eb8a02

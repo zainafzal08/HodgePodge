@@ -1,6 +1,5 @@
 from modules.Module import Module, Trigger
 from utils.Response import Response
-from utils.Formatter import Formatter
 from utils.misc import *
 import os
 import re
@@ -8,13 +7,12 @@ import re
 # enforce the parser stuff
 class Game(Module):
     def __init__(self):
-        self.formatter = Formatter()
         self.diceTypeRange = (1,1000)
         self.diceNumRange = (1,1000)
         super().__init__("Game")
 
     def validate(self, raw, id):
-        if not raw:
+        if raw == None:
             return None
         if id == "d":
             d = int(re.sub('\s+','',raw))

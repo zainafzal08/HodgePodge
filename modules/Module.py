@@ -1,7 +1,6 @@
 class Module():
     def __init__(self,name):
         self.name = name
-        # god help me i hope this doesn't result in a exploit
         self.__daddy__ = None
     def connectParser(self, p):
         self.__parser__ = p

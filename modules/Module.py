@@ -8,10 +8,6 @@ class Module():
         return self.__parser__
     def validate(self, raw, id):
         return None
-    def connectDb(self, db):
-        self.__db__ = db
-    def getDb(self):
-        return self.__db__
 
 class Trigger():
     def __init__(self,regex,grpIds):

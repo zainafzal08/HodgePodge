@@ -8,6 +8,7 @@ class Context():
         self.raw = None
         self.user = None
         self.members = []
+        self.idMap = {}
     def getNumber(self, i):
         e = self.groups[i]
         if e:
@@ -19,7 +20,10 @@ class Context():
         return self.members
     def getUser(self):
         return self.users
-
+    def getGroup(self, n):
+        if n in self.idMap:
+            return self.groups[self.idMap[n]]
+        return None
 class Match():
     def __init__(self, m, rgx, f,grpIds):
         self.module = m
@@ -71,6 +75,8 @@ class Parser():
                 trigger.context.locationId = locationId
                 trigger.context.user = author
                 trigger.context.members = members
+                for e,i in enumerate(trigger.groupId):
+                    trigger.context.idMap[e] = i
                 return trigger
             else:
                 continue

@@ -1,21 +1,21 @@
 from utils.Response import Response
 from utils.Parser import Parser
 from utils.Response import Response
-from utils.Database import Db
 from utils.Daddy import Daddy
 import inspect
 
 class HodgePodge():
-    def __init__(self, dbConnString):
+    def __init__(self):
         self.modules = []
-        self.db = Db(dbConnString)
-        self.daddy = Daddy(self.db)
+        self.daddy = Daddy()
         self.parser = Parser(self.daddy)
+
+    def kill(self):
+        pass
 
     def attachModule(self, m):
         self.modules.append(m)
         m.connectParser(self.parser)
-        m.connectDb(self.db)
         m.__daddy__ = self.daddy
         self.flushModules(m)
 

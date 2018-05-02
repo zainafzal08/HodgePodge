@@ -30,3 +30,9 @@ class HodgePodge():
 
     def processRequest(response, request):
         pass
+
+    def talk():
+        # lock
+            # enforce this doesn't take too long
+        # unlock
+        pass

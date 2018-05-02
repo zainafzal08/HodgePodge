@@ -7,4 +7,4 @@ class Testing(threading.Thread):
         self.name = "Testing"
         self.boy = boy
     def run(self):
-        self.key = boy.generateKey(self.name)
+        

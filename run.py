@@ -1,11 +1,16 @@
 from interfaces.Testing import Testing
 from HodgePodge import HodgePodge
+from modules.Game import Game
+from modules.Utility import Utility
+
+# set up our boy :3
+boy = HodgePodge()
+boy.attachModule(Game())
+boy.attachModule(Utility())
 
 # set up the interfaces we want to run
-boy = HodgePodge()
 interfaces = []
 interfaces.append(Testing(1,boy))
-
 # begin
 for interface in interfaces:
     interface.start()

@@ -6,6 +6,21 @@ A beautiful bot built to help out by interacting with various chat and web inter
 
 Built from the ground up to be modular, expandable and low key adorable.
 
+## Linking
+
+Hey! Are you here because you use hodge pogde on multiple apps and wish to have your accounts linked? Nice!
+
+Simply go onto one of the apps you already have user data for and type in `hodge podge what's my id` and hodge podge will give you a one time use identifier
+
+> this doesn't expire so make sure you use it before someone else does!
+
+Then go to the app you just put hodge podge into and say `hodge podge my id is <id>`
+and hodge podge will remove all your user data in that app and relink you so both apps reference the same user data.
+
+You can do this as many times as you like but do note hodge podge doesn't merge your user data, it just propegates one user object. (if your wondering why he doesn't merge them it's because i'm lazy and that makes the whole process a lot more complicated.)
+
+Now because this isn't automatic you can have multiple accounts with hodge podge depending on use. i.e you can have a different wholesome account on discord and messenger but then a naughty account on IRC and Slack. (assuming in the future these interfaces even exist.)
+
 ## Modules
 
 Hi! I assume you are here because you want to either understand how hodge podge works or because you want to maybe help out by building a module!
@@ -156,3 +171,22 @@ def roll(self, context):
 
 #### Request
 **TODO: put in docs for request object**
+
+## Interfaces
+
+Hodge podge can interact with multiple different forms of input in the form of interfaces. A interface is a object that runs on it's own thread that interacts with the outside world (either through a website or api or whatever) and passes messages and state info about a certain chat to hodge podge so he can respond.
+
+As long as the interface can run on a thread and can call the "talk" method with hodge podge, it will work. Wanna connect hodge podge up to a irc? go for it! set up some code to listen in and pass the messages to hodge podge and format/send back the result.
+
+#### Intro
+
+A interface must have a init function which takes in a threadID (for tracking purposes) and a reference to hodge podge so you can trigger commands.
+
+In `run.py` each interface is given a threadId and a reference to hodge podge and started on it's own thread. Because of the fact that we have concurrent processes hodge podge calls modules asyncronously. Once the module responds, the response will be ushered onto the interface.
+
+This allows hodge podge to function even with a slow or unreliable modules. The  interfaces though has to conform to this async approach.
+
+Hodge podge will return from a talk request immediately, the function is a wrapper which basically triggers the relevant modules and then adds your message to a queue waiting for the modules to respond.
+Once the modules respond the supplied callback function is triggered with the response.
+
+#### Users

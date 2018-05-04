@@ -31,8 +31,13 @@ class HodgePodge():
     def processRequest(response, request):
         pass
 
-    def talk():
-        # lock
-            # enforce this doesn't take too long
-        # unlock
-        pass
+    def meet(self, interface, id, displayName):
+        self.daddy.registerUser(interface, id, displayName)
+
+    def knows(self, interface, id):
+        return self.daddy.knows(interface, id)
+
+    def talk(self, state, msg):
+        self.daddy.resolve(state)
+        m = self.parser.parse(state,msg)
+        return m.trigger()

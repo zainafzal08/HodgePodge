@@ -65,7 +65,10 @@ class Parser():
             return True
         return False
 
-    def parse(self, message, author, locationId ,members):
+    def parse(self, state, message):
+        author = state.usr
+        locationId = state.id
+        members = state.members
         m = message.lower()
         for trigger in self.triggers:
             s = trigger.regex.search(m)

@@ -7,8 +7,8 @@ import re
 # enforce the parser stuff
 class Game(Module):
     def __init__(self):
-        self.diceTypeRange = (1,1000)
-        self.diceNumRange = (1,1000)
+        self.dice_type_range = (1,1000)
+        self.dice_num_range = (1,1000)
         super().__init__("Game")
 
     def validate(self, raw, id):
@@ -41,29 +41,30 @@ class Game(Module):
         res = Response()
         r = randomNum(1,diceType)
         resText = "I Got %d [%d%s%d]!"%(r+mod,r,modPf,mod) if mod else "I Got %d!"%(r)
-        res.textResponce(resText,context.locationId,"output")
+        res.text_responce(resText,context.location_id,"output")
         return res
 
     @Trigger('hodge podge.*roll[^\d]*(\d+)[^d]*d\s*(\-?\d+)s?\s*([\+\-]\s*\d+)?',["dn","d","m"])
     def multiroll(self, context):
         # set up
         res = Response()
-        diceNum = context.getNumber(0)
-        diceType = context.getNumber(1)
-        mod = context.getNumber(2)
+        dice_num = context.get_number(0)
+        dice_type = context.get_number(1)
+        mod = context.get_number(2)
         modPf = None
         if mod:
             modPf = "+" if mod > 0 else ""
         # calculate
         components = []
         sum = 0
-        for i in range(diceNum):
-            d = randomNum(1,diceType)
+        for i in range(dice_num):
+            d = random_num(1,dice_type)
             sum += d
             components.append(str(d))
-        rollStr = "I got %d!"%(sum+mod) if mod else "I got %d!"%sum
-        componentStr = " (%s[%s%d])"%("+".join(components),modPf,mod) if mod else " (%s)"%("+".join(components))
-        if len(rollStr) + len(componentStr) < 2000:
-            rollStr += componentStr
-        res.textResponce(rollStr,context.locationId,"out")
+        roll_rtr = "I got %d!"%(sum+mod) if mod else "I got %d!"%sum
+        component_str = " (%s[%s%d])"%("+".join(components),modPf,mod) if mod else " (%s)"%("+".join(components))
+        #TODO: shift this into text responce
+        if len(roll_str) + len(component_str) < 2000:
+            roll_str += component_str
+        res.text_responce(roll_str,context.location_id,"out")
         return res

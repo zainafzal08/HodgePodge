@@ -21,20 +21,12 @@ class UserTools(Module):
         res.textResponce(resText,context.locationId,"output")
         return res
 
-    @Trigger('hodge podge what\'?s? my id',[])
-    def getId(self, context):
+    @Trigger('hodge podge what\'?s? my name',[])
+    def nameUpdate(self, context):
         user = context.getUser()
+        name = context.getString(0)
+        display = self.__daddy__.getDisplay(user)
         res = Response()
-        resText = "It's %s"%(self.__daddy__.generateLinkingId(user))
-        res.textResponce(resText,context.locationId,"output")
-        return res
-
-    @Trigger('hodge podge my id is (\w+)',[None])
-    def setId(self, context):
-        user = context.getUser()
-        hid = context.getString(0)
-        self.__daddy__.link(user,hid)
-        res = Response()
-        resText = "Oh of course! I'll remember that"
+        resText = "You are %s!"%display
         res.textResponce(resText,context.locationId,"output")
         return res

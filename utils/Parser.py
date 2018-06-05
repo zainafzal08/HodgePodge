@@ -4,41 +4,42 @@ from utils.Response import Response
 class Context():
     def __init__(self):
         self.groups = []
-        self.locationId = None
+        self.location_id = None
         self.raw = None
         self.user = None
         self.members = []
-        self.idMap = {}
-    def getNumber(self, i):
+        self.id_map = {}
+    def get_number(self, i):
         e = self.groups[i]
         if e:
             return int(re.sub('\s+','',e))
         return None
-    def getString(self, i):
+    def get_string(self, i):
         return self.groups[i]
-    def getMembers(self):
+    def get_members(self):
         return self.members
-    def getUser(self):
-        return self.users
-    def getGroup(self, n):
-        if n in self.idMap:
-            return self.groups[self.idMap[n]]
+    def get_author(self):
+        return self.author
+    def get_group(self, n):
+        if n in self.id_map:
+            return self.groups[self.id_map[n]]
         return None
+
 class Match():
     def __init__(self, m, rgx, f,grpIds):
         self.module = m
         self.regex = re.compile(rgx)
         self.function = f
-        self.groupId = grpIds
+        self.group_id = grpIds
         self.context = Context()
 
     def trigger(self):
         valid = True
         err = None
         for i,g in enumerate(self.context.groups):
-            if i >= len(self.groupId):
+            if i >= len(self.group_id):
                 break
-            v = self.module.validate(g,self.groupId[i])
+            v = self.module.validate(g,self.group_id[i])
             if v:
                 err = v
                 break
@@ -46,7 +47,7 @@ class Match():
             return getattr(self.module,self.function)(self.context)
         else:
             res = Response()
-            res.textResponce("_bzzt_ %s"%err,self.context.locationId,"err")
+            res.textResponce("_bzzt_ %s"%err,self.context.location_id,"err")
             return res
 
 class Parser():
@@ -61,13 +62,13 @@ class Parser():
 
     def permission(self, user, trigger):
         # ask Daddy if user has permission
-        if daddy.pweaseTwigger(trigger.m, trigger.function, user):
+        if self.daddy.canTrigger(trigger.m, trigger.function, user):
             return True
         return False
 
     def parse(self, state, message):
-        author = state.usr
-        locationId = state.id
+        author = state.user
+        location_id = state.location
         members = state.members
         m = message.lower()
         for trigger in self.triggers:
@@ -75,11 +76,11 @@ class Parser():
             if s and self.permission(author, trigger):
                 trigger.context.groups = s.groups()
                 trigger.context.raw = message
-                trigger.context.locationId = locationId
-                trigger.context.user = author
+                trigger.context.location_id = location_id
+                trigger.context.author = author
                 trigger.context.members = members
                 for e,i in enumerate(trigger.groupId):
-                    trigger.context.idMap[e] = i
+                    trigger.context.id_map[e] = i
                 return trigger
             else:
                 continue

@@ -2,9 +2,9 @@ class Module():
     def __init__(self,name):
         self.name = name
         self.__daddy__ = None
-    def connectParser(self, p):
+    def connect_parser(self, p):
         self.__parser__ = p
-    def getParser(self):
+    def get_parser(self):
         return self.__parser__
     def validate(self, raw, id):
         return None
@@ -18,8 +18,7 @@ class Trigger():
         def wrapped_f(*args):
             if not self.initalised:
                 m = args[0]
-                m.getParser().register(args[0],self.regex,f.__name__,self.grpIds)
-                m.__daddy__.registerTrigger(m,f)
+                m.get_parser().register(args[0],self.regex,f.__name__,self.grpIds)
                 self.initalised = True
             else:
                 return f(*args)

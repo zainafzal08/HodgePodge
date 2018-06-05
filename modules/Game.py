@@ -16,14 +16,14 @@ class Game(Module):
             return None
         if id == "d":
             d = int(re.sub('\s+','',raw))
-            if d >= self.diceTypeRange[0] and d <= self.diceTypeRange[1]:
+            if d >= self.dice_type_range[0] and d <= self.dice_type_range[1]:
                 return None
-            return "I can only handle d%d to d%d"%self.diceTypeRange
+            return "I can only handle d%d to d%d"%self.dice_type_range
         elif id == "dn":
             d = int(re.sub('\s+','',raw))
-            if d >= self.diceNumRange[0] and d <= self.diceNumRange[1]:
+            if d >= self.dice_num_range[0] and d <= self.dice_num_range[1]:
                 return None
-            return "I can only handle %d to %d rolls"%self.diceNumRange
+            return "I can only handle %d to %d rolls"%self.dice_num_range
         elif id == "m":
             m = int(re.sub('\s+','',raw))
             if m >= -1000000000000 and m <= 1000000000000:
@@ -33,13 +33,13 @@ class Game(Module):
 
     @Trigger('hodge podge.*roll.*d\s*(\-?\d+)\s*([\+\-]\s*\d+)?',["d","m"])
     def roll(self, context):
-        diceType = context.getNumber(0)
-        mod = context.getNumber(1)
+        dice_type = context.get_number(0)
+        mod = context.get_number(1)
         modPf = None
         if mod:
             modPf = "+" if mod > 0 else ""
         res = Response()
-        r = randomNum(1,diceType)
+        r = random_num(1,dice_type)
         resText = "I Got %d [%d%s%d]!"%(r+mod,r,modPf,mod) if mod else "I Got %d!"%(r)
         res.text_responce(resText,context.location_id,"output")
         return res

@@ -1,6 +1,8 @@
+from utils.User import User
+
 class State():
-    def __init__(self,external_id, members, location):
-        self.user = User(external_id)
+    def __init__(self,author_external_id, members, location):
+        self.author = User(author_external_id)
         self.members = []
         self.verified = False
         for member_id in members:

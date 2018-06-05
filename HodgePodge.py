@@ -5,10 +5,11 @@ from utils.Daddy import Daddy
 import inspect
 
 class HodgePodge():
-    def __init__(self):
+    def __init__(self, dbURL):
         self.modules = []
-        self.daddy = Daddy()
+        self.daddy = Daddy(dbURL)
         self.parser = Parser(self.daddy)
+        self.dbURL = dbURL
 
     def kill(self):
         pass
@@ -29,6 +30,8 @@ class HodgePodge():
                     member[1].__call__()
 
     def talk(self, state, msg):
-        state = self.daddy.resolve_state(state)
+        self.daddy.resolve_state(state)
         m = self.parser.parse(state,msg)
-        return m.trigger()
+        if m:
+            return m.trigger()
+        return None

@@ -62,12 +62,12 @@ class Parser():
 
     def permission(self, user, trigger):
         # ask Daddy if user has permission
-        if self.daddy.canTrigger(trigger.m, trigger.function, user):
+        if self.daddy.can_trigger(trigger.module, trigger.function, user):
             return True
         return False
 
     def parse(self, state, message):
-        author = state.user
+        author = state.author
         location_id = state.location
         members = state.members
         m = message.lower()
@@ -79,7 +79,7 @@ class Parser():
                 trigger.context.location_id = location_id
                 trigger.context.author = author
                 trigger.context.members = members
-                for e,i in enumerate(trigger.groupId):
+                for e,i in enumerate(trigger.group_id):
                     trigger.context.id_map[e] = i
                 return trigger
             else:

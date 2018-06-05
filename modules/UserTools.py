@@ -12,21 +12,23 @@ class UserTools(Module):
         return None
 
     @Trigger('hodge podge call me (.*)$',[])
-    def nameUpdate(self, context):
-        user = context.getUser()
-        name = context.getString(0)
-        self.__daddy__.updateDisplay(user,name)
+    def name_update(self, context):
+        user = context.get_author()
+        name = context.get_string(0)
+        self.__daddy__.update_display(user,name)
         res = Response()
         resText = "I'll remember that %s ;)"%(name)
-        res.textResponce(resText,context.locationId,"output")
+        res.text_responce(resText,context.location_id,"output")
         return res
 
     @Trigger('hodge podge what\'?s? my name',[])
-    def nameUpdate(self, context):
-        user = context.getUser()
-        name = context.getString(0)
-        display = self.__daddy__.getDisplay(user)
+    def name_get(self, context):
+        user = context.get_author()
+        display = user.display_name
         res = Response()
-        resText = "You are %s!"%display
-        res.textResponce(resText,context.locationId,"output")
+        if display:
+            resText = "You are %s!"%display
+        else:
+            resText = "I don't know your name! Feel free to introduce yourself, just say something along the lines of `Hodge Podge call me xX_minecraft_p0rn_Xx`"
+        res.text_responce(resText,context.location_id,"output")
         return res

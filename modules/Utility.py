@@ -21,11 +21,11 @@ class Utility(Module):
 
     @Trigger('hodge podge.*pick someone',[])
     def pick(self, context):
-        members = context.getMembers()
+        members = context.get_members()
         target = pick(members)
         res = Response()
-        resText = "I Have Chosen %s."%(target.getDisplay())
-        res.textResponce(resText,context.locationId,"output")
+        resText = "I Have Chosen %s."%(target.get_display())
+        res.text_responce(resText,context.location_id,"output")
         return res
 
     @Trigger('hodge podge calc(ulate)? ([\+\-\d\*\/e\^\(\)\s]*)',[None,"m"])
@@ -34,5 +34,5 @@ class Utility(Module):
         expr = eval(expr)
         res = Response()
         resText = "By my calculations thats %s"%(str(expr))
-        res.textResponce(resText,context.locationId,"output")
+        res.text_responce(resText,context.location_id,"output")
         return res

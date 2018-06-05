@@ -38,4 +38,3 @@ class Daddy():
 
     def update_display(self, user, name):
         self.execute("UPDATE USERS SET DISPLAY_NAME = ? WHERE INTERNAL_ID = ?",name,user.internal_id)
-        

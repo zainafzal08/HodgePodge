@@ -1,15 +1,13 @@
 from utils.Response import Response
 from utils.Parser import Parser
 from utils.Response import Response
-from utils.Daddy import Daddy
 import inspect
 
 class HodgePodge():
     def __init__(self, dbURL):
         self.modules = []
-        self.daddy = Daddy(dbURL)
-        self.parser = Parser(self.daddy)
-        self.dbURL = dbURL
+        self.parser = Parser()
+        self.dbURL = "db/test.db"
 
     def kill(self):
         pass
@@ -17,7 +15,6 @@ class HodgePodge():
     def attach_module(self, m):
         self.modules.append(m)
         m.connect_parser(self.parser)
-        m.__daddy__ = self.daddy
         self.flush_modules(m)
 
     # ok now i admit. this is a hacky way to do this **BUT**
@@ -29,8 +26,13 @@ class HodgePodge():
                 if member[1].__name__ == "wrapped_f":
                     member[1].__call__()
 
+    def resolve_state(self, state):
+        state.author.resolve(self.dbURL)
+        for member in state.members:
+            member.resolve(self.dbURL)
+
     def talk(self, state, msg):
-        self.daddy.resolve_state(state)
+        self.resolve_state(state)
         m = self.parser.parse(state,msg)
         if m:
             return m.trigger()

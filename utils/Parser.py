@@ -51,9 +51,8 @@ class Match():
             return res
 
 class Parser():
-    def __init__(self, daddy):
+    def __init__(self):
         self.triggers = []
-        self.daddy = daddy
         pass
 
     def register(self, m, rgx, f, grpIds):
@@ -61,8 +60,7 @@ class Parser():
         self.triggers.append(match)
 
     def permission(self, user, trigger):
-        # ask Daddy if user has permission
-        if self.daddy.can_trigger(trigger.module, trigger.function, user):
+        if user.has_permission(trigger.module.name,trigger.function):
             return True
         return False
 

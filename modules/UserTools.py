@@ -15,7 +15,7 @@ class UserTools(Module):
     def name_update(self, context):
         user = context.get_author()
         name = context.get_string(0)
-        self.__daddy__.update_display(user,name)
+        user.update_display(name)
         res = Response()
         resText = "I'll remember that %s ;)"%(name)
         res.text_responce(resText,context.location_id,"output")

@@ -5,7 +5,7 @@ from modules.UserTools import UserTools
 from utils.State import State
 
 # set up our boy :3
-boy = HodgePodge('db/test.db')
+boy = HodgePodge('sqlite:///db/test.db')
 boy.attach_module(Game())
 boy.attach_module(Utility())
 boy.attach_module(UserTools())
@@ -14,7 +14,7 @@ boy.attach_module(UserTools())
 state = State("1",[],"testing")
 r = boy.talk(state, "hodge podge what my name")
 print(r.get_text_msg())
-r = boy.talk(state, "hodge podge call me zain")
+r = boy.talk(state, "hodge podge call me fuckface")
 print(r.get_text_msg())
 r = boy.talk(state, "hodge podge what my name")
 print(r.get_text_msg())

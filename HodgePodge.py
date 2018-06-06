@@ -1,13 +1,25 @@
 from utils.Response import Response
 from utils.Parser import Parser
 from utils.Response import Response
+from exceptions.Interface import InterfaceException
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
 import inspect
+# Import all classes
+from utils.Base import Base
+from utils.User import User
 
 class HodgePodge():
     def __init__(self, dbURL):
         self.modules = []
         self.parser = Parser()
-        self.dbURL = "db/test.db"
+        #DB stuff
+        self.db_engine = create_engine(dbURL)
+        Base.metadata.create_all(self.db_engine)
+        Base.metadata.bind = self.db_engine
+        DBSession = sessionmaker()
+        DBSession.bind = self.db_engine
+        self.db_session = DBSession()
 
     def kill(self):
         pass
@@ -26,14 +38,28 @@ class HodgePodge():
                 if member[1].__name__ == "wrapped_f":
                     member[1].__call__()
 
+    def get_user(self, id):
+        q = self.db_session.query(User).filter(User.external_id == id).all()
+        if not len(q):
+            u = User(external_id=id, display_name=None)
+            self.db_session.add(u)
+            self.db_session.commit()
+            return u
+        return q[0]
+
     def resolve_state(self, state):
-        state.author.resolve(self.dbURL)
-        for member in state.members:
-            member.resolve(self.dbURL)
+        if state.resolved:
+            self.db_session.refresh(state.author)
+            [self.db_session.refresh(m) for m in state.members]
+        else:
+            state.resolved = True
+            state.author = self.get_user(state.author)
+            state.members = [self.get_user(m) for m in state.members]
 
     def talk(self, state, msg):
         self.resolve_state(state)
         m = self.parser.parse(state,msg)
+        self.db_session.commit()
         if m:
             return m.trigger()
         return None

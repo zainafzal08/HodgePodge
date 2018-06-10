@@ -60,7 +60,8 @@ class Parser():
         self.triggers.append(match)
 
     def permission(self, user, trigger):
-        if user.has_permission(trigger.module.name,trigger.function):
+        rule = trigger.module.permissions.get_rule(trigger.function)
+        if user.has_permission(rule):
             return True
         return False
 

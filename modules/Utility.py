@@ -1,5 +1,6 @@
 from modules.Module import Module, Trigger
 from utils.Response import Response
+from utils.Permissions import Permissions
 from utils.misc import *
 import os
 import re

@@ -26,8 +26,11 @@ class HodgePodge():
 
     def attach_module(self, m):
         self.modules.append(m)
-        m.connect_parser(self.parser)
+        m.__connect_parser__(self.parser)
         self.flush_modules(m)
+        m.permissions = self.get_permissions(m.name)
+        # let the module know it's been mounted
+        m.mounted()
 
     # ok now i admit. this is a hacky way to do this **BUT**
     # unless someone else makes a function called wrapped_f
@@ -37,6 +40,10 @@ class HodgePodge():
             if inspect.ismethod(member[1]):
                 if member[1].__name__ == "wrapped_f":
                     member[1].__call__()
+
+    # Todo: fetch permissions, if doesn't exist, create it
+    def get_permissions(self, module_name):
+        return None
 
     def get_user(self, id):
         q = self.db_session.query(User).filter(User.external_id == id).all()

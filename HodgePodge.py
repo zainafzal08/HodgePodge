@@ -8,6 +8,7 @@ import inspect
 # Import all classes
 from utils.Base import Base
 from utils.User import User
+from utils.Permissions import Permissions
 
 class HodgePodge():
     def __init__(self, dbURL):
@@ -27,8 +28,9 @@ class HodgePodge():
     def attach_module(self, m):
         self.modules.append(m)
         m.__connect_parser__(self.parser)
-        self.flush_modules(m)
+        m.__boy__ = self
         m.permissions = self.get_permissions(m.name)
+        self.flush_modules(m)
         # let the module know it's been mounted
         m.mounted()
 
@@ -41,9 +43,8 @@ class HodgePodge():
                 if member[1].__name__ == "wrapped_f":
                     member[1].__call__()
 
-    # Todo: fetch permissions, if doesn't exist, create it
     def get_permissions(self, module_name):
-        return None
+        return Permissions(module_name)
 
     def get_user(self, id):
         q = self.db_session.query(User).filter(User.external_id == id).all()

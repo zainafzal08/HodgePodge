@@ -59,11 +59,8 @@ class Parser():
         match = Match(m,rgx, f, grpIds)
         self.triggers.append(match)
 
-    def permission(self, user, trigger):
-        rule = trigger.module.permissions.get_rule(trigger.function)
-        if user.has_permission(rule):
-            return True
-        return False
+    def permission(self, user, location, trigger):
+        return trigger.module.permissions.test(trigger.function, location, user)
 
     def parse(self, state, message):
         author = state.author
@@ -72,7 +69,7 @@ class Parser():
         m = message.lower()
         for trigger in self.triggers:
             s = trigger.regex.search(m)
-            if s and self.permission(author, trigger):
+            if s and self.permission(author, location_id, trigger):
                 trigger.context.groups = s.groups()
                 trigger.context.raw = message
                 trigger.context.location_id = location_id

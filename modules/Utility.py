@@ -1,13 +1,16 @@
 from modules.Module import Module, Trigger
 from utils.Response import Response
-from utils.Permissions import Permissions
 from utils.misc import *
+from utils.Permissions import Permissions, Behaviour, Rule
 import os
 import re
 
 class Utility(Module):
     def __init__(self):
         super().__init__("Utility")
+
+    def mounted(self):
+        self.permissions.set_rule("calc",Rule(Behaviour.NONE,whitelist=wl))
 
     def validate(self, raw, id):
         if not raw:

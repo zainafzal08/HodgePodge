@@ -1,6 +1,5 @@
 from modules.Module import Module, Trigger
 from utils.Response import Response
-from utils.Permissions import Permissions
 from utils.misc import *
 import os
 import re
@@ -12,10 +11,6 @@ class Game(Module):
         super().__init__("Game")
         self.dice_type_range = (1,1000)
         self.dice_num_range = (1,1000)
-
-    def mounted(self):
-        # TODO: set up some rules
-        self.permissions.set_rule(Rule())
 
     def validate(self, raw, id):
         if raw == None:

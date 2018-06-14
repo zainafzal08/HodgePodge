@@ -5,6 +5,7 @@ class Module():
         self.name = name
         self.permissions = None
         self.__boy__ = None
+        self.__fdocs__ = {}
     def __connect_parser__(self, p):
         self.__parser__ = p
     def __get_parser__(self):
@@ -25,6 +26,7 @@ class Trigger():
                 m = args[0]
                 m.__get_parser__().register(args[0],self.regex,f.__name__,self.grpIds)
                 m.permissions.set_rule(f.__name__,Rule(Behaviour.ALL))
+                m.__fdocs__[f.__name__] = f.__doc__
                 self.initalised = True
             else:
                 return f(*args)

@@ -34,6 +34,35 @@ class HodgePodge():
         # let the module know it's been mounted
         m.mounted()
 
+    def is_module(self, module):
+        return module.lower() in [m.name.lower() for m in self.modules]
+
+    def get_func_doc(self, obj, func_name):
+        d = obj.__fdocs__.get(func_name,None)
+        if not d:
+            return ""
+        d = d.strip()
+        example = d.split("\n")[0].strip()
+        desc = d.split("\n")[1].strip()
+        return (example,desc)
+
+    def get_module_doc(self, obj_name, user, location):
+        obj = self.get_module_obj(obj_name)
+        raw = obj.__doc__.strip()
+        tmp = []
+        for l in raw.split("\n"):
+            tmp.append(l.strip())
+        raw = "\n".join(tmp)
+        func_list = self.parser.get_function_list(obj.name, user, location)
+        func_docs = ["  > %s - %s\n      %s"%(f,self.get_func_doc(obj, f)[0],self.get_func_doc(obj, f)[1]) for f in func_list]
+        func_docs = "\n".join(func_docs)
+        return "```\n%s\n%s\n```"%(raw,func_docs)
+
+    def get_module_obj(self, module):
+        if not self.is_module(module):
+            raise InterfaceException("Invalid Module Supplied")
+        return [m for m in self.modules if m.name.lower() == module][0]
+
     # ok now i admit. this is a hacky way to do this **BUT**
     # unless someone else makes a function called wrapped_f
     # i should be safe....
@@ -46,14 +75,20 @@ class HodgePodge():
     def get_permissions(self, module_name):
         return Permissions(module_name)
 
-    def get_user(self, id):
+    def get_user(self, usr):
+        id = usr[0]
+        tags = usr[1]
         q = self.db_session.query(User).filter(User.external_id == id).all()
+        u  = None
         if not len(q):
-            u = User(external_id=id, display_name=None)
+            qu = User(external_id=id, display_name=None)
             self.db_session.add(u)
             self.db_session.commit()
-            return u
-        return q[0]
+            u = qu
+        else:
+            u = q[0]
+        u.set_tags(tags)
+        return u
 
     def resolve_state(self, state):
         if state.resolved:

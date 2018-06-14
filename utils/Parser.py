@@ -47,7 +47,7 @@ class Match():
             return getattr(self.module,self.function)(self.context)
         else:
             res = Response()
-            res.textResponce("_bzzt_ %s"%err,self.context.location_id,"err")
+            res.text_responce("_bzzt_ %s"%err,self.context.location_id,"err")
             return res
 
 class Parser():
@@ -58,6 +58,9 @@ class Parser():
     def register(self, m, rgx, f, grpIds):
         match = Match(m,rgx, f, grpIds)
         self.triggers.append(match)
+
+    def get_function_list(self, m, user, location):
+        return [t.function for t in self.triggers if t.module.name == m and self.permission(user, location, t)]
 
     def permission(self, user, location, trigger):
         return trigger.module.permissions.test(trigger.function, location, user)

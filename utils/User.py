@@ -16,7 +16,7 @@ class User(Base):
     def add_tag(self, tag):
         if not tag.isalnum():
             raise InterfaceException("All tag names must be alpha-numeric")
-        self.tags.append(tag)
+        self.tags.add(tag)
 
     def get_tags(self):
         return self.tags

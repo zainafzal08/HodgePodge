@@ -16,12 +16,13 @@ boy.attach_module(Utility())
 boy.attach_module(UserTools())
 
 # make a test state
-state = State("1",[],"testing")
+me = ("1",["nerd"])
+state = State(me,[],"testing")
 r = boy.talk(state, "hodge podge what's my name")
 say(r)
 r = boy.talk(state, "hodge podge roll a fat d20 + 8")
 say(r)
-r = boy.talk(state, "hodge podge calculate (5*10)/20")
+r = boy.talk(state, "hodge podge how do i use the utility module")
 say(r)
 
 # end

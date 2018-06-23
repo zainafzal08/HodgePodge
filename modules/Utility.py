@@ -68,3 +68,14 @@ class Utility(Module):
         resText = self.__boy__.get_module_doc(module, context.author, context.location_id)
         res.text_responce(resText,context.location_id,"output")
         return res
+
+    @Trigger('hodge podge what modules do you have.*',[])
+    def list_modules(self, context):
+        '''
+        Hodge podge what modules do you have installed
+        Lists installed modules
+        '''
+        res = Response()
+        resText = self.__boy__.get_module_list()
+        res.text_responce(resText,context.location_id,"output")
+        return res

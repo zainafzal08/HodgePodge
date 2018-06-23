@@ -41,7 +41,8 @@ class Game(Module):
     def roll(self, context):
         '''
         Hodge podge roll a d20 (+2)
-        Rolls a dice (d1 to d1000) with the optional given modifier.
+        Rolls a dice (d1 to d1000) with the optional
+        given modifier.
         '''
         dice_type = context.get_number(0)
         mod = context.get_number(1)

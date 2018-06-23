@@ -3,12 +3,13 @@ from HodgePodge import HodgePodge
 from modules.Game import Game
 from modules.Utility import Utility
 from modules.UserTools import UserTools
+import os
 
 # set up our boy :3
-boy = HodgePodge('sqlite:///db/test.db')
+db = os.environ['DATABASE_URL']
+boy = HodgePodge(db)
 boy.attach_module(Game())
 boy.attach_module(Utility())
 boy.attach_module(UserTools())
-
-tkn = "NDMxMjgwMDU2NDY4MjQyNDM1.DgijaQ.o74HGWgf0rXkzbpQJ6Jou864gBE"
+tkn = os.environ['BOT_TOKEN']
 interfaces.discordInterface.run(boy,tkn)

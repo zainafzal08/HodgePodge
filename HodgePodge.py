@@ -38,6 +38,8 @@ class HodgePodge():
     def is_module(self, module):
         return module.lower() in [m.name.lower() for m in self.modules]
 
+    def get_module_list(self):
+        return "```\n%s\n```"%"\n".join([x.name for x in self.modules])
     def get_func_doc(self, obj, func_name):
         d = obj.__fdocs__.get(func_name,None)
         if not d:

@@ -6,6 +6,5 @@ def random_num(l,u):
 	return n
 
 def rand_pick(a):
-	print(a)
 	i = random_num(0,len(a)-1)
-	return a[i]
+	return list(a)[i]

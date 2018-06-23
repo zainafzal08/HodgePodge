@@ -110,7 +110,6 @@ class HodgePodge():
             state.members = set(state.members)
 
     def talk(self, state, msg):
-        print(state.members)
         self.resolve_state(state)
         m = self.parser.parse(state,msg)
         self.db_session.commit()

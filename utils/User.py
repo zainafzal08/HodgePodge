@@ -103,7 +103,7 @@ class User(object):
         conn = self.conn
         c = conn.cursor()
         t = self.get_string_tags()
-        c.execute("UPDATE USERS SET NAME = %s, TAGS = %s",(self.name,t))
+        c.execute("UPDATE USERS SET NAME = %s, TAGS = %s WHERE ID=%s",(self.name,t,self.id))
         conn.commit()
     def __eq__(self, other):
         return hash(other) == hash(self)

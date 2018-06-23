@@ -17,7 +17,8 @@ boy.attach_module(UserTools())
 
 # make a test state
 me = ("2",["nerd"],True)
-state = State(me,[],"testing")
+friend = ("3",["gay"],False)
+state = State(me,[friend],"testing")
 
 q = input("> ")
 while q != "q":

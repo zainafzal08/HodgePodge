@@ -6,7 +6,12 @@ import re
 
 # enforce the parser stuff
 class Game(Module):
-
+    '''
+    Game
+    =======================================================
+    A Module to let you roll dice and do fun things!
+    -------------------------------------------------------
+    '''
     def __init__(self):
         super().__init__("Game")
         self.dice_type_range = (1,1000)
@@ -34,6 +39,10 @@ class Game(Module):
 
     @Trigger('hodge podge.*roll.*d\s*(\-?\d+)\s*([\+\-]\s*\d+)?',["d","m"])
     def roll(self, context):
+        '''
+        Hodge podge roll a d20 (+2)
+        Rolls a dice (d1 to d1000) with the optional given modifier.
+        '''
         dice_type = context.get_number(0)
         mod = context.get_number(1)
         modPf = None
@@ -47,6 +56,11 @@ class Game(Module):
 
     @Trigger('hodge podge.*roll[^\d]*(\d+)[^d]*d\s*(\-?\d+)s?\s*([\+\-]\s*\d+)?',["dn","d","m"])
     def multiroll(self, context):
+        '''
+        Hodge podge roll 7 d20s (+2)
+        Rolls some number of dice (d1 to d1000) with the
+        optional given modifier added to the end
+        '''
         # set up
         res = Response()
         dice_num = context.get_number(0)
@@ -62,9 +76,8 @@ class Game(Module):
             d = random_num(1,dice_type)
             sum += d
             components.append(str(d))
-        roll_rtr = "I got %d!"%(sum+mod) if mod else "I got %d!"%sum
+        roll_str = "I got %d!"%(sum+mod) if mod else "I got %d!"%sum
         component_str = " (%s[%s%d])"%("+".join(components),modPf,mod) if mod else " (%s)"%("+".join(components))
-        #TODO: shift this into text responce
         if len(roll_str) + len(component_str) < 2000:
             roll_str += component_str
         res.text_responce(roll_str,context.location_id,"out")

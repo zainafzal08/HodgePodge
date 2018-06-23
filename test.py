@@ -6,7 +6,7 @@ from utils.State import State
 
 def say(r):
     if not r:
-        print("> No Response")
+        print(">> No Response")
     else:
         print(r.get_text_msg())
 # set up our boy :3
@@ -16,14 +16,13 @@ boy.attach_module(Utility())
 boy.attach_module(UserTools())
 
 # make a test state
-me = ("1",["nerd"])
+me = ("2",["nerd"],True)
 state = State(me,[],"testing")
-r = boy.talk(state, "hodge podge what's my name")
-say(r)
-r = boy.talk(state, "hodge podge roll a fat d20 + 8")
-say(r)
-r = boy.talk(state, "hodge podge how do i use the utility module")
-say(r)
 
+q = input("> ")
+while q != "q":
+    r = boy.talk(state, q)
+    say(r)
+    q = input("> ")
 # end
 boy.kill()

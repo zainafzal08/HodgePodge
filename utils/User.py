@@ -8,8 +8,8 @@ class User(Base):
     display_name = Column(Text)
     admin = Column(Boolean)
 
-    def inject_external_name_resolver(self, enr):
-        self.external_name = enr
+    def set_external_name(self, en):
+        self.external_name = en
 
     def set_tags(self, tags):
         for tag in tags:
@@ -35,7 +35,7 @@ class User(Base):
         if self.display_name:
             n = self.display_name
         elif hasattr(self,'external_name'):
-            n = self.external_name(self.external_id)
+            n = self.external_name
         if not n:
             return "<No Name Known>"
         return n

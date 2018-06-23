@@ -82,9 +82,9 @@ class HodgePodge():
         id = usr[0]
         tags = usr[1]
         admin = usr[2]
-        enr = None
+        en = None
         if len(usr) > 3:
-            enr = usr[3]
+            en = usr[3]
         q = self.db_session.query(User).filter(User.external_id == id).all()
         u  = None
         if not len(q):
@@ -96,7 +96,8 @@ class HodgePodge():
             u = q[0]
             u.admin = admin
         u.set_tags(tags)
-        u.inject_external_name_resolver(enr)
+        if en:
+            u.set_external_name(en)
         return u
 
     def resolve_state(self, state):

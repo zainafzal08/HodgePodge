@@ -5,6 +5,7 @@ from exceptions.Interface import InterfaceException
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 import inspect
+import re
 # Import all classes
 from utils.Base import Base
 from utils.User import User
@@ -37,13 +38,15 @@ class HodgePodge():
     def is_module(self, module):
         return module.lower() in [m.name.lower() for m in self.modules]
 
+    def get_module_list(self):
+        return "```\n%s\n```"%"\n".join([x.name for x in self.modules])
     def get_func_doc(self, obj, func_name):
         d = obj.__fdocs__.get(func_name,None)
         if not d:
             return ""
         d = d.strip()
         example = d.split("\n")[0].strip()
-        desc = d.split("\n")[1].strip()
+        desc = "\n".join(["       "+l.strip() for l in d.split("\n")[1:]])
         return (example,desc)
 
     def get_module_doc(self, obj_name, user, location):
@@ -54,7 +57,7 @@ class HodgePodge():
             tmp.append(l.strip())
         raw = "\n".join(tmp)
         func_list = self.parser.get_function_list(obj.name, user, location)
-        func_docs = ["  > %s - %s\n      %s"%(f,self.get_func_doc(obj, f)[0],self.get_func_doc(obj, f)[1]) for f in func_list]
+        func_docs = ["  > %s - %s\n%s"%(f,self.get_func_doc(obj, f)[0],self.get_func_doc(obj, f)[1]) for f in func_list]
         func_docs = "\n".join(func_docs)
         return "```\n%s\n%s\n```"%(raw,func_docs)
 
@@ -78,15 +81,17 @@ class HodgePodge():
     def get_user(self, usr):
         id = usr[0]
         tags = usr[1]
+        admin = usr[2]
         q = self.db_session.query(User).filter(User.external_id == id).all()
         u  = None
         if not len(q):
-            qu = User(external_id=id, display_name=None)
-            self.db_session.add(u)
+            qu = User(external_id=id, display_name=None,admin=admin)
+            self.db_session.add(qu)
             self.db_session.commit()
             u = qu
         else:
             u = q[0]
+            u.admin = admin
         u.set_tags(tags)
         return u
 

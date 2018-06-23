@@ -15,6 +15,7 @@ class Utility(Module):
     def __init__(self):
         super().__init__("Utility")
 
+
     def validate(self, raw, id):
         if not raw:
             return None
@@ -38,7 +39,7 @@ class Utility(Module):
         Picks a random person from the current chat
         '''
         members = context.get_members()
-        target = pick(members)
+        target = rand_pick(members)
         res = Response()
         resText = "I Have Chosen %s."%(target.get_display())
         res.text_responce(resText,context.location_id,"output")

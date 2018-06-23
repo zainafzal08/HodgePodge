@@ -62,7 +62,7 @@ class UserTools(Module):
         author = context.get_author()
         res = Response()
         resText = []
-        for user in context.members+[author]:
+        for user in context.members | set([author]):
             tgs = list(sorted([e for e in user.get_tags()]))
             resText.append("%s : %s"%(user.get_display(),tgs))
         resText = "\n".join(resText)

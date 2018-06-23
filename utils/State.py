@@ -4,7 +4,7 @@ class State():
     def __init__(self,author_external, members, location):
         self.author = author_external
         self.resolved = False
-        self.members = []
+        self.members = [author_external]
         for member in members:
             self.members.append(member)
         self.location = location

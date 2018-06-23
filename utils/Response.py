@@ -8,4 +8,7 @@ class Response():
     def get_text_target(self):
         return self.text.get("target",None)
     def get_text_msg(self):
-        return self.text.get("msg",None)
+        t = self.text.get("msg",None)
+        if t and len(t) > 2000:
+            return "_bzzt_ Response too big to display, use web interface."
+        return t

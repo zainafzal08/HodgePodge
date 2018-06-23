@@ -18,10 +18,15 @@ def get_channel(id):
         return target[0]
     return None
 
+def name_resolver(usr_id):
+    l = [x.name for x in client.get_all_members() if x.id == usr_id]
+    if len(l) > 1:
+        return l[0]
+    return None
 def get_user(msg, usr):
     admin = usr.permissions_in(msg.channel).administrator
-    tgs = [x.name for x in usr.roles]
-    return (usr.id,tgs,admin)
+    tgs = [x.name for x in usr.roles if x.name.isalnum()]
+    return (usr.id,tgs,admin,name_resolver)
 
 @client.event
 async def on_ready():

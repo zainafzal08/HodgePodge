@@ -34,7 +34,7 @@ class User(Base):
         n = None
         if self.display_name:
             n = self.display_name
-        elif self.external_name:
+        elif hasattr(self,'external_name'):
             n = self.external_name(self.external_id)
         if not n:
             return "<No Name Known>"

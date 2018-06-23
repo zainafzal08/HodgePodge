@@ -52,8 +52,8 @@ class Rule:
         if r != None:
             return r
         # check if allowed in tags
-        in_allowed = True if len(user.tags & self.allowed_tags) > 0 else False
-        in_blocked = True if len(user.tags & self.blocked_tags) > 0 else False
+        in_allowed = True if len(user.get_tags() & self.allowed_tags) > 0 else False
+        in_blocked = True if len(user.get_tags() & self.blocked_tags) > 0 else False
         r = self.boolean_check(in_blocked,in_allowed)
         if r != None:
             return r

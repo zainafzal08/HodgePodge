@@ -7,6 +7,7 @@ class User(Base):
     external_id = Column(Text)
     display_name = Column(Text)
     admin = Column(Boolean)
+    tags = Column(Text)
 
     def set_external_name(self, en):
         self.external_name = en
@@ -19,16 +20,17 @@ class User(Base):
                 continue
 
     def add_tag(self, tag):
-        if not hasattr(self,'tags'):
-            self.tags = set()
         if not tag.isalnum():
             raise InterfaceException("All tag names must be alpha-numeric")
-        self.tags.add(tag)
+        if(not self.tags):
+            self.tags = tag
+        else:
+            self.tags += ",%s"%tag
 
     def get_tags(self):
-        if not hasattr(self,'tags'):
-            self.tags = set()
-        return self.tags
+        if not self.tags:
+            return None
+        return set(self.tags.split(","))
 
     def get_display(self):
         n = None

@@ -1,3 +1,0 @@
-export BOT_TOKEN="NDMxMjgwMDU2NDY4MjQyNDM1.DgijaQ.o74HGWgf0rXkzbpQJ6Jou864gBE"
-export DATABASE_URL="postgres://jafogdbtlqausb:f298112130633bc8d57a40cd084db793a773dc6b6c5c4927d10b5d39cd741d1a@ec2-54-83-0-158.compute-1.amazonaws.com:5432/dfvitpookte5d1"
-python3 run.py

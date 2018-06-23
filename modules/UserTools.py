@@ -17,7 +17,7 @@ class UserTools(Module):
         super().__init__("UserTools")
 
     def mounted(self):
-        r = Rule(Behaviour.ALL, admin_only=True)
+        r = Rule(Behaviour.NONE, external_admin_only=True)
         self.permissions.set_rule("list_users",r)
 
     def validate(self, raw, id):
@@ -31,7 +31,7 @@ class UserTools(Module):
         '''
         user = context.get_author()
         name = context.get_string(0)
-        user.display_name = name
+        user.update_display(name)
         res = Response()
         resText = "I'll remember that %s ;)"%(name)
         res.text_responce(resText,context.location_id,"output")
@@ -44,7 +44,7 @@ class UserTools(Module):
         Tells you the current nickname hodge podge has for you
         '''
         user = context.get_author()
-        display = user.display_name
+        display = user.get_display()
         res = Response()
         if display:
             resText = "You are %s!"%display
@@ -63,8 +63,7 @@ class UserTools(Module):
         res = Response()
         resText = []
         for user in context.members | set([author]):
-            tgs = list(sorted([e for e in user.get_tags()]))
-            resText.append("%s : %s"%(user.get_display(),tgs))
+            resText.append("%s : %s / %s"%(user.get_display(),user.get_tags(),user.get_external_tags()))
         resText = "\n".join(resText)
         resText = "```%s```"%resText
         res.text_responce(resText,context.location_id,"output")

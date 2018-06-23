@@ -2,12 +2,12 @@ from utils.Response import Response
 from utils.Parser import Parser
 from utils.Response import Response
 from exceptions.Interface import InterfaceException
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
+import psycopg2
+import sqlite3
+import urllib.parse as urlparse
 import inspect
 import re
 # Import all classes
-from utils.Base import Base
 from utils.User import User
 from utils.Permissions import Permissions
 
@@ -16,15 +16,28 @@ class HodgePodge():
         self.modules = []
         self.parser = Parser()
         #DB stuff
-        self.db_engine = create_engine(dbURL)
-        Base.metadata.create_all(self.db_engine)
-        Base.metadata.bind = self.db_engine
-        DBSession = sessionmaker()
-        DBSession.bind = self.db_engine
-        self.db_session = DBSession()
+        self.db_url = dbURL
+        self.db_conn = None
+        self.open_db()
+
+    def open_db(self):
+        url = urlparse.urlparse(self.db_url)
+        dbname = url.path[1:]
+        user = url.username
+        password = url.password
+        host = url.hostname
+        port = url.port
+        self.db_conn = psycopg2.connect(dbname=dbname,user=user,password=password,host=host,port=port)
+
+    def close_db(self):
+        self.db_conn.close()
+        self.db_conn = None
 
     def kill(self):
-        pass
+        self.close_db()
+
+    def __del__(self):
+        self.kill()
 
     def attach_module(self, m):
         self.modules.append(m)
@@ -78,42 +91,18 @@ class HodgePodge():
     def get_permissions(self, module_name):
         return Permissions(module_name)
 
-    def get_user(self, usr):
-        id = usr[0]
-        tags = usr[1]
-        admin = usr[2]
-        en = None
-        if len(usr) > 3:
-            en = usr[3]
-        q = self.db_session.query(User).filter(User.external_id == id).all()
-        u  = None
-        if not len(q):
-            qu = User(external_id=id, display_name=None,admin=admin)
-            self.db_session.add(qu)
-            self.db_session.commit()
-            u = qu
-        else:
-            u = q[0]
-            u.admin = admin
-        u.set_tags(tags)
-        if en:
-            u.set_external_name(en)
-        return u
-
+    # lazy resolve
     def resolve_state(self, state):
-        if state.resolved:
-            self.db_session.refresh(state.author)
-            [self.db_session.refresh(m) for m in state.members]
-        else:
-            state.resolved = True
-            state.author = self.get_user(state.author)
-            state.members = [self.get_user(m) for m in state.members]
-            state.members = set(state.members)
+        state.author.set_db(self.db_conn)
+        for m in state.members:
+            m.set_db(self.db_conn)
 
     def talk(self, state, msg):
+        # open up
         self.resolve_state(state)
+        # respond
         m = self.parser.parse(state,msg)
-        self.db_session.commit()
+        r = None
         if m:
-            return m.trigger()
-        return None
+            r = m.trigger()
+        return r

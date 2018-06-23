@@ -18,8 +18,12 @@ class Rule:
         self.whitelist = kargs.get("whitelist",set())
         self.admin_only = kargs.get("admin_only",False)
         self.tie_behavior = kargs.get("tie_behavior",Behaviour.BLOCK_FIRST)
+
+        self.external_admin_only = kargs.get("external_admin_only",False)
         self.location_blacklist = kargs.get("location_blacklist",set())
         self.location_whitelist = kargs.get("location_whitelist",set())
+        self.external_allowed_tags= kargs.get("external_allowed_tags",set())
+        self.external_blocked_tags = kargs.get("external_blocked_tags",set())
 
     def boolean_check(self,black,white):
         if black and white:
@@ -35,28 +39,44 @@ class Rule:
 
     def test(self, location, user):
         # test admin status first
-        if user.admin:
-            return True
-        elif self.admin_only:
+        if not user.admin and self.admin_only:
             return False
+        elif user.admin and self.admin_only:
+            return True
+
+        if not user.external_admin and self.external_admin_only:
+            return False
+        elif user.external_admin and self.external_admin_only:
+            return True
+
         # test location permission
         in_black_loc = location in self.location_blacklist
         in_white_loc = location in self.location_whitelist
         r = self.boolean_check(in_black_loc,in_white_loc)
-        if r != None:
+        if r != None and r != True:
             return r
+
         # test if on blacklist or whitelist first
         in_black = user in self.blacklist
         in_white = user in self.whitelist
         r = self.boolean_check(in_black,in_white)
         if r != None:
             return r
+
         # check if allowed in tags
         in_allowed = True if len(user.get_tags() & self.allowed_tags) > 0 else False
         in_blocked = True if len(user.get_tags() & self.blocked_tags) > 0 else False
         r = self.boolean_check(in_blocked,in_allowed)
         if r != None:
             return r
+
+        # check if allowed in external tags
+        in_allowed = True if len(user.get_external_tags() & self.external_allowed_tags) > 0 else False
+        in_blocked = True if len(user.get_external_tags() & self.external_blocked_tags) > 0 else False
+        r = self.boolean_check(in_blocked,in_allowed)
+        if r != None:
+            return r
+
         # return default if user has no assoicated rules
         return True if self.default == Behaviour.ALL else False
 

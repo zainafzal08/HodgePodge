@@ -1,7 +1,7 @@
 import discord
 from discord.utils import find
 from utils.State import State
-
+from utils.User import User
 client = discord.Client()
 boy = None
 
@@ -19,9 +19,11 @@ def get_channel(id):
     return None
 
 def get_user(msg, usr):
-    admin = usr.permissions_in(msg.channel).administrator
-    tgs = [x.name for x in usr.roles if x.name.isalnum()]
-    return (usr.id,tgs,admin,usr.name)
+    u = User("Discord",usr.id)
+    u.external_admin = usr.permissions_in(msg.channel).administrator
+    u.external_tags = set([x.name for x in usr.roles if x.name.isalnum()])
+    u.external_name = usr.name
+    return u
 
 @client.event
 async def on_ready():

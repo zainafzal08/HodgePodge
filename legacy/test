@@ -1,0 +1,3 @@
+source env/bin/activate
+export BOT_TOKEN="NDMxMjgwMDU2NDY4MjQyNDM1.Dg-QxQ.lR29Xnk-vkKJSGXxml7iGsPtH3I"
+python app.py

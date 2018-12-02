@@ -18,4 +18,21 @@ class User(object):
             raise falcon.HTTPInvalidHeader("Invalid credentials", "Authorization")
     def on_post(self, req, resp, discordId):
         self.authorize(req)
-        self.db.newUser(discordId)
+        try:
+            self.db.newUser(discordId)
+        except:
+            raise falcon.HTTPConflict(description="discordId already in use")
+
+    def on_get(self, req, resp, discordId):
+        self.authorize(req)
+        try:
+            resp.media = self.db.getUser(discordId)
+        except:
+            raise falcon.HTTPInvalidParam("Unknown user", "discordId")
+    def on_put(self, req, resp, discordId):
+        self.authorize(req)
+        try:
+            self.db.updateUser(discordId,req.media)
+        except Exception as error:
+            print(error)
+            raise falcon.HTTPInvalidParam("Unknown user", "discordId")

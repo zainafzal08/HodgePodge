@@ -1,4 +1,5 @@
 import falcon
 from endpoints.User import User
-api = falcon.API()
+from middleware.CORS import CORS
+api = falcon.API(middleware=CORS())
 api.add_route('/user/{discordId}', User())

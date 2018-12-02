@@ -6,7 +6,7 @@ The memory banks of our dear sweet boy.
 
 ### User
 
-`GET /user/:discord_id` Gets the information for a user
+`GET /user/:discordId` Gets the information for a user
 
 ```
 {
@@ -17,10 +17,10 @@ The memory banks of our dear sweet boy.
 }
 ```
 
-`POST /user/:discord_id` Make a new user! params are optional
+`POST /user/:discordId` Make a new user!
 
 
-`PUT /user/:discord_id` update a user!
+`PUT /user/:discordId` update a user!
 
 ```
 {
@@ -31,7 +31,7 @@ The memory banks of our dear sweet boy.
 
 ### Server
 
-`PUT /server/:server_id/memes` add a new meme to a server
+`PUT /server/:serverId/memes` add a new meme to a server
 
 ```
 {
@@ -39,3 +39,13 @@ The memory banks of our dear sweet boy.
   response: String
 }
 ```
+
+### Shop - requires users to have money / xp / other details!
+
+`POST /server/:serverId/shop/:shop` add a new shop
+
+`PUT /server/:serverId/shop/:shop` add a new item to a shop
+
+`GET /server/:serverId/shop/:shop` get list of items in the shop
+
+`DELETE /server/:serverId/shop/:shop` buy item from shop

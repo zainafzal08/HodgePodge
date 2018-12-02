@@ -33,21 +33,21 @@ body {
 h1 {
 	font-family: 'Ubuntu', sans-serif;
 	color: #FFFFFF;
-	font-size: 3rem;
+	font-size: 3em;
 	font-weight: 100;
 }
 h2 {
 	font-family: 'Ubuntu', sans-serif;
 	color: white;
-	font-size: 1rem;
+	font-size: 1em;
 	margin: 0px;
-	margin-bottom: 1rem;
+	margin-bottom: 1em;
 	opacity: 0.7;
 }
 h3 {
 	font-family: 'Ubuntu', sans-serif;
 	color: #FAFAFA;
-	font-size: 0.8rem;
+	font-size: 0.8em;
 	margin: 0px;
 	opacity: 0.5;
 }
@@ -61,10 +61,11 @@ h3 {
 	flex-wrap: wrap;
 }
 .card {
-	margin: 1rem;
-	width: calc(400px - 3rem);
-	height: calc(300px - 3rem);
-	padding: 1.5rem;
+	margin: 1em;
+	width: calc(400px - 3em);
+	min-width: calc(400px - 3em);
+	height: calc(300px - 3em);
+	padding: 1.5em;
 	background-color: white;
 	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 	text-align: center;
@@ -73,7 +74,7 @@ h3 {
 .card h1 {
 	font-family: 'Ubuntu', sans-serif;
 	color: #444444;
-	font-size: 1.5rem;
+	font-size: 1.5em;
 	font-weight: 100;
 	margin: 0px;
 }
@@ -84,7 +85,7 @@ h3 {
 	background-color: #EBEBEB;
 	border: none;
 	outline: none;
-	margin-bottom: 1.5rem;
+	margin-bottom: 1.5em;
 }
 
 .left-msg {
@@ -93,7 +94,7 @@ h3 {
 	align-items: center;
 	justify-content: flex-start;
 	flex-direction: row;
-	margin-bottom: 1rem;
+	margin-bottom: 1em;
 }
 .right-msg {
 	width: 100%;
@@ -101,28 +102,28 @@ h3 {
 	align-items: center;
 	justify-content: flex-end;
 	flex-direction: row;
-	margin-bottom: 1rem;
+	margin-bottom: 1em;
 }
 .right-msg img, .left-msg img {
 	width: 32px;
 	height: 32px;
 	border-radius: 50%;
-	margin-left: 0.5rem;
-	margin-right: 0.5rem;
+	margin-left: 0.5em;
+	margin-right: 0.5em;
 }
 .msg {
-	width: calc(60% - 2rem);
-	height: 2rem;
+	width: calc(60% - 2em);
+	height: 2em;
 	border-radius: 10px;
 	background-color: #EBEBEB;
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
-	padding-left: 1rem;
-	padding-right: 1rem;
+	padding-left: 1em;
+	padding-right: 1em;
 	font-family: 'Ubuntu', sans-serif;
 	color: #444;
-	font-size: 0.8rem;
+	font-size: 0.8em;
 }
 .right-msg .msg {
 	justify-content: flex-end;

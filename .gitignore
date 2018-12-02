@@ -1,8 +1,0 @@
-env/
-test
-testFetch
-db/test.db
-test.html
-tests.html
-__pycache__/
-*.py[cod]

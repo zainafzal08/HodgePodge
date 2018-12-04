@@ -29,7 +29,7 @@ async def on_message(message):
 
 def run():
     hodge_logger.info("Launching Bot")
-    client.run(os.environ['BOT_TOKEN'])
+    client.run(os.environ['bot_token'])
     client.close()
 
 # i guess run

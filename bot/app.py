@@ -3,14 +3,10 @@ import os
 import re
 from loggers import hodge_logger
 from modules.Core import Core
+from modules.Dice import Dice
 
 client = discord.Client()
-call_chain = [Core()]
-
-def preprocess(s):
-    s = re.sub("<@!431280056468242435>","!hp",s)
-    s = re.sub("hodge\s+podge","!hp",s,flags=re.IGNORECASE)
-    return s
+call_chain = [Dice(),Core()]
 
 @client.event
 async def on_ready():
@@ -23,14 +19,16 @@ async def on_message(message):
     if (message.author.bot):
         return
     # preprocess
-    m = preprocess(message.content)
+    context = Context(message)
     for module in call_chain:
-        r = await module.message(m)
-        if (r):
-            location = r.location
-            if not location:
-                location = message.channel
-            await client.send_message(location, r.content)
+        r = await module.message(context)
+        if r == None:
+            continue
+        location = r.location
+        if not location:
+            location = message.channel
+        await client.send_message(location, r.content)
+        break
 
 def run():
     hodge_logger.info("Launching Bot")

@@ -5,4 +5,4 @@ db/test.db
 test.html
 tests.html
 __pycache__/
-*.py[cod]
+*.py[cod]startDev

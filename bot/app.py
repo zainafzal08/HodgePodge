@@ -25,7 +25,12 @@ async def on_message(message):
     # preprocess
     m = preprocess(message.content)
     for module in call_chain:
-        await module.message(m)
+        r = await module.message(m)
+        if (r):
+            location = r.location
+            if not location:
+                location = message.channel
+            await client.send_message(location, r.content)
 
 def run():
     hodge_logger.info("Launching Bot")

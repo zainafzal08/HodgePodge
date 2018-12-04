@@ -1,0 +1,52 @@
+body {
+  background: #FAFAFA;
+  display: flex;
+  flex-direction: row;
+  margin: 0px;
+  font-family: 'Ubuntu', sans-serif;
+}
+/* #b24592, #f15f79 */
+nav {
+  width: calc(25% - 2rem);
+  border-right: 2px solid #EBEBEB;
+  min-height: 100vh;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+nav h1 {
+  margin-bottom: 0px;
+}
+nav sm {
+  font-size: 0.8rem;
+  color: #BBB;
+}
+nav h2 {
+  font-size: 1.3rem;
+  font-weight: 300;
+  color: #444;
+  cursor: pointer;
+}
+nav h2:hover {
+  color: #b24592;
+}
+nav h2.active {
+  color: #b24592;
+}
+nav h3 {
+  font-size: 1rem;
+  font-weight: 100;
+  margin-left: 2rem;
+  color: #777;
+  cursor: pointer;
+}
+nav h3:hover {
+  color: #f15f79;
+}
+nav h3.active {
+  color: #f15f79;
+}
+
+main {
+  width: calc(75% - 2px);
+  min-height: 100vh;
+}

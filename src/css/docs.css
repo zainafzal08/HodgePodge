@@ -9,7 +9,8 @@ body {
 nav {
   width: calc(25% - 2rem);
   border-right: 2px solid #EBEBEB;
-  min-height: 100vh;
+  max-height: 100vh;
+  overflow-y: scroll;
   padding-left: 1rem;
   padding-right: 1rem;
 }
@@ -47,6 +48,45 @@ nav h3.active {
 }
 
 main {
-  width: calc(75% - 2px);
-  min-height: 100vh;
+  width: calc(75% - 2px - 4rem);
+  max-height: calc(100vh - 4rem);
+  overflow-y: scroll;
+  padding: 2rem;
+}
+main h2 {
+  font-size: 2rem;
+  color: black;
+  font-weight: 400;
+  border-bottom: 2px solid #f15f79;
+  padding-bottom: 0.5rem;
+}
+main h3 {
+  font-size: 1.2rem;
+  color: #444444;
+  font-weight: 400;
+}
+main p {
+  font-size: 1rem;
+  color: #777777;
+  font-weight: 100;
+}
+main .cards {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+main .chat-log {
+  width: 300px;
+  height: 250px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+main li {
+  color: #777777;
+}
+main code {
+  color: #f15f79;
+  font-size: 1.1rem;
 }

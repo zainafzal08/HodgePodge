@@ -21,24 +21,48 @@
     <h1> Hodge Podge Docs </h1>
     <sm> Version 1.0 </sm>
     <br><br>
-    <h2> Core Functionality </h2>
-      <h3> Help </h3>
-      <h3> Personality </h3>
-      <h3> Triggering </h3>
-    <h2> Dice Module </h2>
-      <h3> Basic Use </h3>
-      <h3> Modifiers </h3>
-      <h3> Rerolling </h3>
-      <h3> Custom Responses </h3>
-    <h2> Math Module </h2>
-      <h3> Basic Use </h3>
-      <h3> Supported Operations </h3>
-    <h2> Nicknames </h2>
-      <h3> Basic Use </h3>
-      <h3> Persistance </h3>
   </nav>
   <main>
-
+    <h2> Core Functionality </h2>
+    <p>
+      Hodge Podge has a couple of features that are build into the core bot,
+      other then these, there are many other features that have been attached in modules.
+      Note that core functionality is at the bottom of the call chain and will be activated
+      only if no other module has already been activated by the message.
+    </p>
+    <h3> Triggering </h3>
+    <p>
+        You can trigger hodge podge commands anywhere in a sentence by writing <code>!hp</code>.
+        For example <code> !hp roll a d5 </code> You can also do <code> Hodge Podge </code> or <code> Hodgepodge </code> case insensitive.
+        You can also mention hodge podge <code> @HodgePodge roll a d5 </code>
+    </p>
+    <h3> Help </h3>
+    <p>
+      You can ask hodgepodge for some help, he'll just link you back to this page. You can trigger hodgepodge to send you the link via
+      <ul>
+        <li> Hodge Podge help</li>
+        <li> Hodge Podge docs</li>
+        <li> Hodge Podge show documentation</li>
+        <li> Hodge Podge how do i...</li>
+      </ul>
+    </p>
+    <h3> Personality </h3>
+    <p>
+      Hodge Podge will response to some things such as <code> Hodge Podge i love you </code>.
+    </p>
+    <h2> Dice Module </h2>
+    <h3> Basic Use </h3>
+    <h3> Modifiers </h3>
+    <h3> Rerolling </h3>
+    <h3> Custom Responses </h3>
+    <h2> Math Module </h2>
+    <h3> Basic Use </h3>
+    <h3> Supported Operations </h3>
+    <h2> Nicknames </h2>
+    <h3> Basic Use </h3>
+    <h3> Persistance </h3>
   </main>
+  <!-- autogenerate nav from main contents -->
+  <script src="src/js/docs.js"></script>
 </body>
 </html>

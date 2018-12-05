@@ -22,6 +22,12 @@ c.execute('''CREATE TABLE if not exists memes(
           response TEXT,
           FOREIGN KEY(server) REFERENCES servers(id)
 )''')
+c.execute('''CREATE TABLE if not exists environment_variables(
+          server TEXT,
+          key TEXT,
+          value TEXT,
+          FOREIGN KEY(server) REFERENCES servers(id)
+)''')
 c.execute('INSERT INTO auth_keys(key) VALUES("{}")'.format(os.environ["auth_key"]))
 conn.commit()
 conn.close()

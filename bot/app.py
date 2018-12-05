@@ -2,6 +2,7 @@ import discord
 import os
 import re
 from loggers import hodge_logger
+from util.context import Context
 from modules.Core import Core
 from modules.Dice import Dice
 
@@ -18,7 +19,6 @@ async def on_message(message):
     # ignore bots
     if (message.author.bot):
         return
-    # preprocess
     context = Context(message)
     for module in call_chain:
         r = await module.message(context)

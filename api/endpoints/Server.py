@@ -6,11 +6,11 @@ class Env(object):
         self.db = DB()
         self.supportedAuthorizationTypes = ["token"]
 
-    def enforce(j,**kargs):
+    def enforce(self, j,**kargs):
         for k in kargs.keys():
             if k not in j:
                 raise falcon.HTTPMissingParam(k)
-            if j[k] != kargs[k]:
+            if type(j[k]) != kargs[k]:
                 raise falcon.HTTPInvalidParam("expected {} to be of type {}".format(k,kargs[k]),k)
 
     def authorize(self, req):
@@ -27,12 +27,10 @@ class Env(object):
 
     def on_get(self, req, resp, serverId):
         self.authorize(req)
-        j = req.media
-        self.enforce(j,key=str,value=str)
-        
+        resp.media = self.db.getAllEnvVars(serverId)
 
     def on_put(self, req, resp, serverId):
         self.authorize(req)
         j = req.media
         self.enforce(j,key=str,value=str)
-        self.db.newEnvVar(serverId,j.key,j.value)
+        self.db.envVar(serverId,j["key"],j["value"])

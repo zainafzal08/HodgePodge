@@ -13,7 +13,7 @@ class DB:
         return r
     def authKeys(self):
         l = self.execute("SELECT key from auth_keys")
-        return map(lambda x: x[0],l)
+        return list(map(lambda x: x[0],l))
     def newUser(self, discordId):
         self.execute("INSERT INTO USERS(DISCORD_ID) VALUES(?)",discordId)
     def getUser(self, discordId):
@@ -42,3 +42,15 @@ class DB:
         q+= " WHERE discord_id=?"
         params[1].append(discordId)
         self.execute(q,*params[1])
+
+    def envVar(self, serverId, key, value):
+        if len(self.execute("SELECT * FROM environment_variables WHERE server=? AND key=?",serverId,key)) == 0:
+            self.execute("INSERT INTO environment_variables(server,key,value) VALUES(?,?,?)",serverId,key,value)
+        else:
+            self.execute("UPDATE environment_variables SET value=? WHERE server=? AND key=?",value,serverId,key)
+    def getAllEnvVars(self, serverId):
+        pairs = self.execute("SELECT KEY,VALUE FROM environment_variables WHERE server=?",serverId)
+        r = {}
+        for pair in pairs:
+            r[pair[0]] = pair[1]
+        return r;

@@ -35,26 +35,113 @@
         You can trigger hodge podge commands anywhere in a sentence by writing <code>!hp</code>.
         For example <code> !hp roll a d5 </code> You can also do <code> Hodge Podge </code> or <code> Hodgepodge </code> case insensitive.
         You can also mention hodge podge <code> @HodgePodge roll a d5 </code>
+        <cmds>
+          <c> <hl>Hodge Podge</hl> help</c>
+          <c> <hl>HodgePodge</hl> help</c>
+          <c> <hl>hodgepodge</hl> help</c>
+          <c> <hl>!hp</hl> help</c>
+          <c> <hl>@HodgePodge</hl> help</c>
+        </cmds>
     </p>
     <h3> Help </h3>
     <p>
       You can ask hodgepodge for some help, he'll just link you back to this page. You can trigger hodgepodge to send you the link via
-      <ul>
-        <li> Hodge Podge help</li>
-        <li> Hodge Podge docs</li>
-        <li> Hodge Podge show documentation</li>
-        <li> Hodge Podge how do i...</li>
-      </ul>
+      <cmds>
+        <c> Hodge Podge help</c>
+        <c> Hodge Podge docs</c>
+        <c> Hodge Podge show documentation</c>
+        <c> Hodge Podge how do i...</c>
+      </cmds>
     </p>
     <h3> Personality </h3>
     <p>
-      Hodge Podge will response to some things such as <code> Hodge Podge i love you </code>.
+      Hodge Podge will respond to some things such as <code> Hodge Podge i love you </code>.
     </p>
     <h2> Dice Module </h2>
     <h3> Basic Use </h3>
+    <p>
+      You can simply say <code> Hodge Podge Roll a dx </code> where x is any
+      number 2 to 10000. To roll multiple dice specify a number of dice to roll
+      i.e <code> Hodge Podge roll 5 d10 </code>. Because hodge podge just looks for
+      the phrase "roll" followed by some numbers you can make your requests more
+      dramatic.
+      <cmds>
+        <c> Hodge Podge roll a d10</c>
+        <c> Hodge Podge roll 5 d6</c>
+        <c> Hodge Podge my dude roll me a fat d8</c>
+        <c> Hodge Podge please roll 7 of those hot hot d18</c>
+      </cmds>
+      Please note that Hodge podge will display the individual dice rolls if you
+       roll up to 20 dice. Any more and Hodge podge just reports the total.
+      <cmds>
+        <c> Hodge Podge roll 3 d2</c>
+        <r> I got 4! The breakdown was (1,2,1)</r>
+        <c> Hodge Podge roll 25 d2</c>
+        <r> I got 28 total!</r>
+      </cmds>
+    </p>
     <h3> Modifiers </h3>
+    <p>
+      You can also apply modifiers by specifying a plus or minus after your roll.
+      <cmds>
+        <c> Hodge Podge roll a d10 +3</c>
+        <r> I got 8! 5[+3] </r>
+        <c> Hodge Podge roll a d10 -3</c>
+        <r> I got 2! 5[-3] </r>
+      </cmds>
+      If you want to apply a modifier to a multi dice roll you have to specify
+      if you want the modifier to apply to the total...
+      <cmds>
+        <c> Hodge Podge roll 2 d10 <hl>+3</hl></c>
+        <r> I got 13! The breakdown was (5,5)[+3] </r>
+      </cmds>
+      Or if you want it to apply to every dice roll
+      <cmds>
+        <c> Hodge Podge roll 2 d10 <hl>++3</hl></c>
+        <r> I got 16! The breakdown was (5[+3],5[+3]) </r>
+      </cmds>
+    </p>
     <h3> Rerolling </h3>
+    <p>
+      Hodge podge will remember the last roll in every channel and will reroll it when asked.
+      you simply need to say <code> Hodge podge reroll </code>, hodge podge will ignore all text after the reroll word
+      <cmds>
+        <c> Hodge Podge roll 2 d10 ++3</c>
+        <r> I got 16! The breakdown was (5[+3],5[+3]) </r>
+        <c> Hodge Podge reroll that</c>
+        <r> I got 11! The breakdown was (2[+3],3[+3]) </r>
+      </cmds>
+    </p>
     <h3> Custom Responses </h3>
+    <p>
+      When hodge podge rolls a critical miss or a critical hit for a single dice
+      he will say "oof" or "nice!". But you can overide these for your server via
+      <cmds>
+        <c>Hodge Podge set critical_miss_msg to <hl>lmao u suck </hl></c>
+        <c>Hodge Podge set critical_hit_msg to <hl>and that's pussy babe! </hl></c>
+      </cmds>
+      See below
+      <cmds>
+        <c> Hodge Podge roll a d20 </c>
+        <r> oof. I got 1!</r>
+        <c> Hodge Podge reroll </c>
+        <r> I got 20! nice.</r>
+        <c> Hodge Podge set critical_miss_msg to lmao u suck.</c>
+        <r> Got it! </r>
+        <c> Hodge Podge set critical_hit_msg to and that's pussy babe!</c>
+        <r> Got it! </r>
+        <c> Hodge Podge roll a d20 </c>
+        <r> lmao u suck. I got 1!</r>
+        <c> Hodge Podge reroll </c>
+        <r> I got 20! and that's pussy babe!</r>
+      </cmds>
+    </p>
+    <h2> Utility Module </h2>
+    <h3> Decisions </h3>
+    <p>
+      Hodge Podge can flip a coin, pick a random person in the chat,
+      or pick from a set of options randomly.
+    </p>
     <h2> Math Module </h2>
     <h3> Basic Use </h3>
     <h3> Supported Operations </h3>

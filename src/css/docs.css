@@ -103,3 +103,66 @@ main code {
   color: #f15f79;
   font-size: 1.1rem;
 }
+main cmds {
+  margin-left: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  width: calc(100% - 2rem);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+}
+main cmds .speech-bubble {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+main cmds .speech-bubble.response {
+  width: 80%;
+  margin-left: 20%;
+}
+main cmds .speech-bubble .acc-img{
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-position: center;
+  background-size: cover;
+  background-image: url("/src/img/acc.png");
+  margin-right: 0.5rem;
+}
+main cmds .speech-bubble .hp-img{
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-position: center;
+  background-size: cover;
+  background-image: url("/src/img/profile.png");
+  margin-left: 0.5rem;
+}
+main cmds c {
+  color: #777;
+  background-color: rgba(235,235,235,0.5);
+  border-radius: 10px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  width: 40%;
+}
+main cmds c hl{
+  color: #f15f79;
+}
+main cmds r {
+  color: #777;
+  background-color: rgba(255,192,203,0.4);
+  border-radius: 10px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  width: 40%;
+}
+main cmds r hl{
+  color: #f15f79;
+}

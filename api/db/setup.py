@@ -1,4 +1,5 @@
 import sqlite3
+import os
 conn = sqlite3.connect('test.db')
 c = conn.cursor()
 c.execute('''CREATE TABLE if not exists users(
@@ -21,6 +22,6 @@ c.execute('''CREATE TABLE if not exists memes(
           response TEXT,
           FOREIGN KEY(server) REFERENCES servers(id)
 )''')
-c.execute('INSERT INTO auth_keys(key) VALUES("{}"))'.format(os.enviorn["auth_key"]))
+c.execute('INSERT INTO auth_keys(key) VALUES("{}")'.format(os.environ["auth_key"]))
 conn.commit()
 conn.close()

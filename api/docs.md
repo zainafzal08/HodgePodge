@@ -31,6 +31,24 @@ The memory banks of our dear sweet boy.
 
 ### Server
 
+`GET /server/:serverId/env` get all environment variables for a server
+
+```
+{
+  key: value,
+  ...
+}
+```
+
+`PUT /server/:serverId/env` add a new environment variable to a server
+
+```
+{
+  key: String,
+  value: String
+}
+```
+
 `PUT /server/:serverId/memes` add a new meme to a server
 
 ```

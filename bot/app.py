@@ -2,7 +2,7 @@ import discord
 import os
 import re
 from loggers import hodge_logger
-from util.context import Context
+from util.Context import Context
 from modules.Core import Core
 from modules.Dice import Dice
 

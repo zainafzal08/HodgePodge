@@ -7,11 +7,26 @@ def preprocess(s):
     return s
 
 class Context:
-    def __init__(self. message):
+    def __init__(self, message):
         self.message = preprocess(message.content)
         self.location = message.channel
         self._message = message
-    def test(*patterns):
-        s = this.message
+        self.groups = None
+        self.match = False
+    def test(self, *patterns):
+        s = self.message
         r = [re.search("!hp "+p,s,flags=re.IGNORECASE) != None for p in patterns]
         return reduce(lambda x,y: x or y,r)
+    def apply(self, pattern):
+        self.match = False
+        pattern = "!hp {}".format(pattern)
+        m = re.search(pattern,self.message,flags=re.IGNORECASE)
+        if m:
+            self.groups = m.groups()
+            self.raw = m.group(1)
+            self.match = True
+    def group(self, n):
+        if(n == 0):
+            return self.raw
+        n-=1
+        return self.groups[n]

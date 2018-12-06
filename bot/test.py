@@ -5,9 +5,9 @@ from util.Context import Context
 from util.Message_Wrapper import Message_Wrapper
 from modules.Core import Core
 from modules.Dice import Dice
+import asyncio
 
 call_chain = [Dice(),Core()]
-
 
 async def simulate_message(message):
     context = Context(Message_Wrapper(message))
@@ -18,7 +18,7 @@ async def simulate_message(message):
         location = r.location
         if not location:
             location = context.location
-        await client.send_message(location, r.content)
+        print("[{}] {}".format(location, r.content))
         break
 
 async def run():
@@ -26,7 +26,9 @@ async def run():
     hodge_logger.info("Launching Bot")
     i = input("> ")
     while (i != "!hp q"):
-        await simulate_message(message)
+        await simulate_message(i)
         i = input("> ")
 
-run()
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(run())

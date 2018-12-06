@@ -23,7 +23,7 @@ class Context:
         m = re.search(pattern,self.message,flags=re.IGNORECASE)
         if m:
             self.groups = m.groups()
-            self.raw = m.group(1)
+            self.raw = m.group(0)
             self.match = True
     async def apply_chain(self, chain):
         for e in chain:
@@ -32,7 +32,4 @@ class Context:
                 return await e[1](self.groups,self)
 
     def group(self, n):
-        if(n == 0):
-            return self.raw
-        n-=1
         return self.groups[n]

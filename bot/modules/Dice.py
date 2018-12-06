@@ -2,6 +2,7 @@ from util.Response import Response
 from util.misc import lmap
 import math
 import os
+from loggers import dice_module_logger
 from functools import reduce
 
 class Dice:
@@ -11,12 +12,24 @@ class Dice:
         r = int.from_bytes(os.urandom(2),byteorder='little')/(2**16)
         r = math.ceil(r*type)
         return r
-    async def get_env_var(self, key):
-        if(key == "critial_hit_msg"):
-            return "Nice!"
-        if(key == "critial_miss_msg"):
-            return "oof."
-    async def multi_roll(self, grps):
+    async def get_env_var(self, server, key):
+        # do fancy stuff to get a object
+        options = {}
+        options["headers"] = {"Authoriziation": "token {}".format(os.environ['auth_key'])}
+        o = {}
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url("server",server,"env"),**options) as resp:
+                l = "GET {} - {}".format(url("server",server,"env"), resp.status)
+                dice_module_logger(l)
+                o = await resp.json()
+
+        if ("critial_hit_msg" not in o):
+            o["critial_hit_msg"] = "Nice!"
+        if ("critial_miss_msg" not in o):
+            o["critial_miss_msg"] = "oof."
+        return o[key]
+
+    async def multi_roll(self, grps, context):
         dice_num = grps[0]
         dice_type = grps[1]
         mod,val=[None,None]
@@ -40,7 +53,7 @@ class Dice:
             rolls = "({})".format(",".join(rolls))
         return Response("I got {}! The breakdown was {}".format(total,rolls))
 
-    async def single_roll(self, grps):
+    async def single_roll(self, grps, context):
         dice_type = grps[0]
         mod,val=[None,None]
         if len(grps) > 1:
@@ -48,8 +61,8 @@ class Dice:
         dice_type = int(dice_type)
         val = int(val) if val else None
 
-        hit = await self.get_env_var("critial_hit_msg")
-        miss = await self.get_env_var("critial_miss_msg")
+        hit = await self.get_env_var(context.location, "critial_hit_msg")
+        miss = await self.get_env_var(context.location, "critial_miss_msg")
         og_roll = self.random_num(int(dice_type))
         roll = og_roll
         if (mod != None and val != None):

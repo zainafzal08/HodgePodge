@@ -1,0 +1,16 @@
+#!/bin/bash
+
+for flag in $@;
+do
+  if [ flag == "r" ]; then
+    echo "Reseting database..."
+    [ -f "api/db/test.db" ] && rm api/db/test.db;
+    cd api/db
+    python3 setup.py
+  fi
+done
+cd bot
+
+tmux new-session -s "master" -d "./test; exec bash"
+tmux split-window -t "master" -h "cd ..; cd api; ./dev"
+tmux a -t "master"

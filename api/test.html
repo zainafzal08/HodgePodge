@@ -17,7 +17,6 @@
         <script>
             // setup test helpers
             mocha.setup('bdd');
-
             describe('Server Environment Variables', function() {
                 const SERVER = Date.now();
                 it('fails on missing data', function() {
@@ -50,6 +49,11 @@
                         chai.expect(response.status).to.equal(400);
                     })
                 });
+                it('returns empty object for non existant server', function() {
+                    return request(`GET /server/lmao/env`)
+                    .then(r=>r.json())
+                    .then(r=>chai.expect(Object.keys(r).length).to.equal(0))
+                });
                 it('allows for new key value pair', function() {
                     return request(`PUT /server/${SERVER}/env`,{"key":"A","value":"1"}).then(response => {
                         chai.expect(response.status).to.equal(200);
@@ -70,6 +74,7 @@
                     .then(r=>r.json())
                     .then(r=>chai.expect(r.A).to.equal("2"))
                 });
+
             });
             // run tests
             mocha.run();

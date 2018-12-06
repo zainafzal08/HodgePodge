@@ -30,13 +30,23 @@
                         chai.expect(response.status).to.equal(400);
                     })
                 });
-                it('fails on one missing key', function() {
+                it('fails on one missing field', function() {
                     return request(`PUT /server/${SERVER}/env`,{"key":"6"}).then(response => {
                         chai.expect(response.status).to.equal(400);
                     })
                 });
                 it('fails on incorrect types', function() {
                     return request(`PUT /server/${SERVER}/env`,{"key":6,"value":"6"}).then(response => {
+                        chai.expect(response.status).to.equal(400);
+                    })
+                });
+                it('fails on incorrect key format', function() {
+                    return request(`PUT /server/${SERVER}/env`,{"key":"hello world","value":"6"}).then(response => {
+                        chai.expect(response.status).to.equal(400);
+                    })
+                });
+                it('fails on empty key', function() {
+                    return request(`PUT /server/${SERVER}/env`,{"key":"","value":"6"}).then(response => {
                         chai.expect(response.status).to.equal(400);
                     })
                 });

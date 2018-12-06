@@ -1,5 +1,6 @@
 import falcon
 from db.DB import DB
+import re
 
 class Env(object):
     def __init__(self):
@@ -33,4 +34,6 @@ class Env(object):
         self.authorize(req)
         j = req.media
         self.enforce(j,key=str,value=str)
+        if not re.match("^\w+(_\w+)*$",j["key"]):
+            raise falcon.HTTPInvalidParam("expected key to be 1 word snake case","key")
         self.db.envVar(serverId,j["key"],j["value"])

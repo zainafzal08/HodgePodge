@@ -25,6 +25,12 @@ class Context:
             self.groups = m.groups()
             self.raw = m.group(1)
             self.match = True
+    async def apply_chain(self, chain):
+        for e in chain:
+            self.apply(e[0])
+            if self.match:
+                return await e[1](self.groups)
+                
     def group(self, n):
         if(n == 0):
             return self.raw

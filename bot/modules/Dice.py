@@ -1,4 +1,5 @@
 from util.Response import Response
+from util.misc import lmap
 import math
 import os
 from functools import reduce
@@ -15,13 +16,19 @@ class Dice:
             return "Nice!"
         if(key == "critial_miss_msg"):
             return "oof."
-    def multi_roll(self, dice_num,dice_type,mod,val):
+    async def multi_roll(self, grps):
+        dice_num = grps[0]
+        dice_type = grps[1]
+        mod,val=[None,None]
+        if len(grps) > 2:
+            mod,val = grps[2:]
         dice_num = int(dice_num)
-        if val:
-            val = int(val)
-        rolls = [self.random_num(int(dice_type)) for _ in range(dice_num)]
+        dice_type = int(dice_num)
+        val = int(val) if val else None
+
+        rolls = [self.random_num(dice_type) for _ in range(dice_num)]
         total = sum(rolls)
-        rolls = list(map(lambda x: str(x),rolls))
+        rolls = lmap(lambda x: str(x),rolls)
         if mod == "+" or mod == "-":
             total = total + val if mod == "+" else total - val
             rolls = "({})[{}{}]".format(",".join(rolls),mod,val)
@@ -33,9 +40,14 @@ class Dice:
             rolls = "({})".format(",".join(rolls))
         return Response("I got {}! The breakdown was {}".format(total,rolls))
 
-    async def single_roll(self, dice_type,mod,val):
-        if val:
-            val = int(val)
+    async def single_roll(self, grps):
+        dice_type = grps[0]
+        mod,val=[None,None]
+        if len(grps) > 1:
+            mod,val = grps[1:]
+        dice_type = int(dice_type)
+        val = int(val) if val else None
+
         hit = await self.get_env_var("critial_hit_msg")
         miss = await self.get_env_var("critial_miss_msg")
         og_roll = self.random_num(int(dice_type))
@@ -49,17 +61,10 @@ class Dice:
         return Response(msg)
 
     async def message(self, context):
-        context.apply("roll.*(\d+).*d(\d+)[^\+\-]*([+\-][+\-]?)\s*(\d+)")
-        if context.match:
-            g = list(context.groups)
-            return self.multi_roll(g[0],g[1],g[2],g[3])
-        context.apply("roll.*(\d+).*d(\d+)")
-        if context.match:
-            g = list(context.groups)
-            return self.multi_roll(g[0],g[1],None,None)
-        context.apply("roll.*d(\d+).*([+\-])\s*(\d+)")
-        if context.match:
-            return await self.single_roll(context.group(1),context.group(2),context.group(3))
-        context.apply("roll.*d(\d+)")
-        if context.match:
-            return await self.single_roll(context.group(1),None,None)
+        chain = [
+            (".*roll.*(\d+).*d(\d+)[^\+\-]*([+\-][+\-]?)\s*(\d+)",self.multi_roll),
+            (".*roll.*(\d+).*d(\d+)",self.multi_roll),
+            (".*roll.*d(\d+).*([+\-])\s*(\d+)",self.single_roll),
+            (".*roll.*d(\d+)",self.single_roll)
+        ]
+        return await context.apply_chain(chain)

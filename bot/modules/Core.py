@@ -22,7 +22,6 @@ class Core:
             async with session.put(self.url("server",server,"env"),**options) as resp:
                 l = "PUT {} ({}={}) - {}".format(self.url("server",server,"env"),key,value,resp.status)
                 core_module_logger.info(l)
-                print(await resp.text())
 
     async def message(self, context):
         if context.test("help","show documentation","docs","how do i.*"):

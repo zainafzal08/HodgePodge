@@ -30,9 +30,23 @@ class Dice:
             o["critical_hit_msg"] = "Nice!"
         if ("critical_miss_msg" not in o):
             o["critical_miss_msg"] = "oof."
-        return o[key]
+        return o.get(key,None)
+
+    async def save_roll(self, server, value):
+        options = {}
+        key = "last_roll"
+        options["data"] = json.dumps({"key":key,"value":value})
+        options["headers"] = {
+            "Authorization": "token {}".format(os.environ['auth_key']),
+            "Content-Type": "application/json"
+        }
+        async with aiohttp.ClientSession() as session:
+            async with session.put(self.url("server",server,"env"),**options) as resp:
+                l = "PUT {} ({}={}) - {}".format(self.url("server",server,"env"),key,value,resp.status)
+                dice_module_logger.info(l)
 
     async def multi_roll(self, grps, context):
+        await self.save_roll(context.location,context.raw)
         dice_num = grps[0]
         dice_type = grps[1]
         mod,val=[None,None]
@@ -57,6 +71,7 @@ class Dice:
         return Response("I got {}! The breakdown was {}".format(total,rolls))
 
     async def single_roll(self, grps, context):
+        await self.save_roll(context.location,context.raw)
         dice_type = grps[0]
         mod,val=[None,None]
         if len(grps) > 1:
@@ -77,6 +92,11 @@ class Dice:
         return Response(msg)
 
     async def message(self, context):
+        if context.message == "!hp reroll":
+            lr = await self.get_env_var(context.location, "last_roll")
+            if lr == None:
+                return Response("I don't know what you last rolled! Sorry!")
+            context.message = lr
         chain = [
             (".*roll.*(\d+).*d(\d+)[^\+\-]*([+\-][+\-]?)\s*(\d+)",self.multi_roll),
             (".*roll.*(\d+).*d(\d+)",self.multi_roll),

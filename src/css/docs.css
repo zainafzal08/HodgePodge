@@ -130,7 +130,7 @@ main cmds .speech-bubble .acc-img{
   border-radius: 50%;
   background-position: center;
   background-size: cover;
-  background-image: url("/src/img/acc.png");
+  background-image: url("../img/acc.png");
   margin-right: 0.5rem;
 }
 main cmds .speech-bubble .hp-img{
@@ -139,7 +139,7 @@ main cmds .speech-bubble .hp-img{
   border-radius: 50%;
   background-position: center;
   background-size: cover;
-  background-image: url("/src/img/profile.png");
+  background-image: url("../img/profile.png");
   margin-left: 0.5rem;
 }
 main cmds c {

@@ -52,8 +52,14 @@ class Dice:
         mod,val=[None,None]
         if len(grps) > 2:
             mod,val = grps[2:]
+            if abs(val) > 100000:
+                return Response("Bit of a intense modifier, not sure i can handle a number like that. Sorry!")
         dice_num = int(dice_num)
         dice_type = int(dice_num)
+        if dice_type < 2 or dice_type > 10000:
+            return Response("How can you even have that many faces on a dice? Pick a reasonable dice please!")
+        if dice_num < 1 or dice_num > 10000:
+            return Response("That is not a amount of dice i can roll, be reasonable.")
         val = int(val) if val else None
 
         rolls = [self.random_num(dice_type) for _ in range(dice_num)]
@@ -68,6 +74,8 @@ class Dice:
             rolls = "({})".format(",".join(rolls))
         else:
             rolls = "({})".format(",".join(rolls))
+        if dice_num > 20:
+            Response("I got {}!".format(total))
         return Response("I got {}! The breakdown was {}".format(total,rolls))
 
     async def single_roll(self, grps, context):
@@ -76,8 +84,12 @@ class Dice:
         mod,val=[None,None]
         if len(grps) > 1:
             mod,val = grps[1:]
+            if abs(val) > 100000:
+                return Response("Bit of a intense modifier, not sure i can handle a number like that. Sorry!")
         dice_type = int(dice_type)
         val = int(val) if val else None
+        if dice_type < 2 or dice_type > 10000:
+            return Response("How can you even have that many faces on a dice? Pick a reasonable dice please!")
 
         hit = await self.get_env_var(context.location, "critical_hit_msg")
         miss = await self.get_env_var(context.location, "critical_miss_msg")

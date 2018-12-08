@@ -1,0 +1,22 @@
+#!/bin/bash
+
+tmux new-session -s "api" -d "cd api; ./dev"
+source bot/env/bin/activate
+t="tests/tests.js"
+cp api/tests/apiTests.js $t
+for test in bot/tests/*; do
+  name=`echo $test | rev | cut -d'/' -f1 | rev`;
+  echo "describe('Bot tests - $name', function() {" >> $t;
+  while read line; do
+    input=$(echo $line | sed 's/ *\-\> */`/g' | cut -d'`' -f1)
+    output=$(echo $line | sed 's/ *\-\> */`/g' | cut -d'`' -f2)
+    botOutput=$(python bot/autotest.py "$input")
+    echo "    it('$input'){" >> $t
+    echo "        chai.expect($botOutput).to.match(/$output/);" >> $t
+    echo "    }" >> $t
+  done < $test
+  echo "});"; >> $t
+done
+
+#open tests/test.html
+tmux -a "api"

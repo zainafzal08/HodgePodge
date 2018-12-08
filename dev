@@ -1,16 +1,6 @@
 #!/bin/bash
-
-for flag in $@;
-do
-  if [ flag == "r" ]; then
-    echo "Reseting database..."
-    [ -f "api/db/test.db" ] && rm api/db/test.db;
-    cd api/db
-    python3 setup.py
-  fi
-done
-cd bot
-
-tmux new-session -s "master" -d "./dev; exec bash"
-tmux split-window -t "master" -h "cd ..; cd api; ./dev"
+runApi="cd api; source env/bin/activate; gunicorn --reload app:api; exec bash"
+runBot="cd bot; source env/bin/activate; python app.py"
+tmux new-session -s "master" -d "$runApi"
+tmux split-window -t "master" -h "$runBot"
 tmux a -t "master"

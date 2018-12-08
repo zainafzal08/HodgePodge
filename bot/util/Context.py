@@ -3,7 +3,7 @@ from functools import reduce
 
 def preprocess(s):
     s = re.sub("<@!431280056468242435>","!hp",s)
-    s = re.sub("hodge\s+podge","!hp",s,flags=re.IGNORECASE)
+    s = re.sub("hodge\s*podge","!hp",s,flags=re.IGNORECASE)
     return s
 
 class Context:

@@ -1,15 +1,16 @@
-!hp help                           -> lol
-Hodge Podge help                   -> lol
-hodge podge help                   -> lol
-hodgepodge help                    -> lol
-<@!431280056468242435> help        -> lol
-!hp help                           -> lol
-!hp docs                           -> lol
-!hp show documentation             -> lol
-!hp how do i use the core module   -> lol
-!hp how do i use anything          -> lol
-!hp how do i                       -> lol
-!hp set a lol to b                 -> lol
-!hp set real_var to ha             -> lol
-!hp set real_var to ha space       -> lol
-!hp reveal real_var                -> lol
+!hp help                           -> \[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html
+Hodge Podge help                   -> \[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html
+hodge podge help                   -> \[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html
+hodgepodge help                    -> \[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html
+hodge     podge help               -> \[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html
+<@!431280056468242435> help        -> \[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html
+!hp help                           -> \[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html
+!hp docs                           -> \[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html
+!hp show documentation             -> \[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html
+!hp how do i use the core module   -> \[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html
+!hp how do i use anything          -> \[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html
+!hp how do i                       -> \[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html
+!hp set a lol to b                 ->
+!hp set real_var to ha             -> Got it!
+!hp set real_var to ha space       -> Got it!
+!hp reveal real_var                -> ha space

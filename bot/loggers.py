@@ -20,3 +20,9 @@ hodge_logger.addHandler(ch)
 user_module_logger.addHandler(ch)
 core_module_logger.addHandler(ch)
 dice_module_logger.addHandler(ch)
+
+def silence():
+    hodge_logger.setLevel(logging.ERROR)
+    user_module_logger.setLevel(logging.ERROR)
+    core_module_logger.setLevel(logging.ERROR)
+    dice_module_logger.setLevel(logging.ERROR)

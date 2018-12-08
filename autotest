@@ -1,22 +1,21 @@
 #!/bin/bash
-
-tmux new-session -s "api" -d "cd api; ./dev"
+runApi="cd api; source env/bin/activate; gunicorn --reload app:api; exec bash"
+tmux new-session -s "master" -d "$runApi"
 source bot/env/bin/activate
 t="tests/tests.js"
 cp api/tests/apiTests.js $t
 for test in bot/tests/*; do
   name=`echo $test | rev | cut -d'/' -f1 | rev`;
-  echo "describe('Bot tests - $name', function() {" >> $t;
-  while read line; do
+  echo "describe('Bot tests - $name', function() {" >> $t
+  while read -r line; do
     input=$(echo $line | sed 's/ *\-\> */`/g' | cut -d'`' -f1)
     output=$(echo $line | sed 's/ *\-\> */`/g' | cut -d'`' -f2)
     botOutput=$(python bot/autotest.py "$input")
-    echo "    it('$input'){" >> $t
-    echo "        chai.expect($botOutput).to.match(/$output/);" >> $t
-    echo "    }" >> $t
+    echo "    it('$input',function(){" >> $t
+    echo "        let r = new RegExp(String.raw\`$output\`)" >>  $t
+    echo "        chai.expect(\"$botOutput\").to.match(r);" >> $t
+    echo "    });" >> $t
   done < $test
-  echo "});"; >> $t
+  echo "});" >> $t
 done
-
-#open tests/test.html
-tmux -a "api"
+open tests/test.html

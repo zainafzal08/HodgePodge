@@ -6,11 +6,13 @@ from util.Message_Wrapper import Message_Wrapper
 from modules.Core import Core
 from modules.Dice import Dice
 import asyncio
+import sys
+from loggers import silence
 
 call_chain = [Dice(),Core()]
 
 async def simulate_message(message):
-    context = Context(Message_Wrapper(message))
+    context = Context(Message_Wrapper(message,me="btf"))
     for module in call_chain:
         r = await module.message(context)
         if r == None:
@@ -22,12 +24,8 @@ async def simulate_message(message):
         break
 
 async def run():
-    hodge_logger.info("Running Testing Interface v.1.0!")
-    hodge_logger.info("Launching Bot")
-    i = input("> ")
-    while (i != "!hp q"):
-        await simulate_message(i)
-        i = input("> ")
+    silence()
+    await simulate_message(sys.argv[1])
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(run())

@@ -56,3 +56,69 @@ describe('Server Environment Variables', function() {
         .then(r=>chai.expect(r.A).to.equal("2"))
     });
 });
+describe('Bot tests - core', function() {
+    it('!hp help',function(){
+        let r = new RegExp(String.raw`\[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html`)
+        chai.expect("[btf] I have a nice list of what i can do at http://zainafzal08.github.io/HodgePodge/docs.html").to.match(r);
+    });
+    it('Hodge Podge help',function(){
+        let r = new RegExp(String.raw`\[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html`)
+        chai.expect("[btf] I have a nice list of what i can do at http://zainafzal08.github.io/HodgePodge/docs.html").to.match(r);
+    });
+    it('hodge podge help',function(){
+        let r = new RegExp(String.raw`\[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html`)
+        chai.expect("[btf] I have a nice list of what i can do at http://zainafzal08.github.io/HodgePodge/docs.html").to.match(r);
+    });
+    it('hodgepodge help',function(){
+        let r = new RegExp(String.raw`\[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html`)
+        chai.expect("[btf] I have a nice list of what i can do at http://zainafzal08.github.io/HodgePodge/docs.html").to.match(r);
+    });
+    it('hodge podge help',function(){
+        let r = new RegExp(String.raw`\[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html`)
+        chai.expect("[btf] I have a nice list of what i can do at http://zainafzal08.github.io/HodgePodge/docs.html").to.match(r);
+    });
+    it('<@!431280056468242435> help',function(){
+        let r = new RegExp(String.raw`\[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html`)
+        chai.expect("[btf] I have a nice list of what i can do at http://zainafzal08.github.io/HodgePodge/docs.html").to.match(r);
+    });
+    it('!hp help',function(){
+        let r = new RegExp(String.raw`\[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html`)
+        chai.expect("[btf] I have a nice list of what i can do at http://zainafzal08.github.io/HodgePodge/docs.html").to.match(r);
+    });
+    it('!hp docs',function(){
+        let r = new RegExp(String.raw`\[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html`)
+        chai.expect("[btf] I have a nice list of what i can do at http://zainafzal08.github.io/HodgePodge/docs.html").to.match(r);
+    });
+    it('!hp show documentation',function(){
+        let r = new RegExp(String.raw`\[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html`)
+        chai.expect("[btf] I have a nice list of what i can do at http://zainafzal08.github.io/HodgePodge/docs.html").to.match(r);
+    });
+    it('!hp how do i use the core module',function(){
+        let r = new RegExp(String.raw`\[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html`)
+        chai.expect("[btf] I have a nice list of what i can do at http://zainafzal08.github.io/HodgePodge/docs.html").to.match(r);
+    });
+    it('!hp how do i use anything',function(){
+        let r = new RegExp(String.raw`\[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html`)
+        chai.expect("[btf] I have a nice list of what i can do at http://zainafzal08.github.io/HodgePodge/docs.html").to.match(r);
+    });
+    it('!hp how do i',function(){
+        let r = new RegExp(String.raw`\[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html`)
+        chai.expect("[btf] I have a nice list of what i can do at http://zainafzal08.github.io/HodgePodge/docs.html").to.match(r);
+    });
+    it('!hp set a lol to b',function(){
+        let r = new RegExp(String.raw``)
+        chai.expect("").to.match(r);
+    });
+    it('!hp set real_var to ha',function(){
+        let r = new RegExp(String.raw`Got it!`)
+        chai.expect("[btf] Got it!").to.match(r);
+    });
+    it('!hp set real_var to ha space',function(){
+        let r = new RegExp(String.raw`Got it!`)
+        chai.expect("[btf] Got it!").to.match(r);
+    });
+    it('!hp reveal real_var',function(){
+        let r = new RegExp(String.raw`ha space`)
+        chai.expect("[btf] real_var = ha space").to.match(r);
+    });
+});

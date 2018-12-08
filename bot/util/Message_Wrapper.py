@@ -1,4 +1,4 @@
 class Message_Wrapper:
-    def __init__(self, m):
+    def __init__(self, m, **kargs):
         self.content = m
-        self.channel = "testing-terminal"
+        self.channel = kargs.get("me","testing-terminal")

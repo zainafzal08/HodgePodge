@@ -1,5 +1,5 @@
 #!/bin/bash
-cd bot
-tmux new-session -s "master" -d "./test; exec bash"
-tmux split-window -t "master" -h "cd ..; cd api; ./dev"
-tmux a -t "master"
+runApi="cd api; source env/bin/activate; gunicorn --reload app:api; exec bash"
+runBot="cd bot; source env/bin/activate; python test.py"
+tmux new-session -s "master" -d "$runApi"
+tmux split-window -t "master" -h "$runBot"

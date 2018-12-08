@@ -23,6 +23,18 @@ class Core:
                 l = "PUT {} ({}={}) - {}".format(self.url("server",server,"env"),key,value,resp.status)
                 core_module_logger.info(l)
 
+    async def get_env_var(self, server, key):
+        # do fancy stuff to get a object
+        options = {}
+        options["headers"] = {"Authorization": "token {}".format(os.environ['auth_key'])}
+        o = {}
+        async with aiohttp.ClientSession() as session:
+            async with session.get(self.url("server",server,"env"),**options) as resp:
+                l = "GET {} - {}".format(self.url("server",server,"env"), resp.status)
+                core_module_logger.info(l)
+                o = json.loads(await resp.text())
+        return o.get(key,None)
+
     async def message(self, context):
         if context.test("help","show documentation","docs","how do i.*"):
             msg = "I have a nice list of what i can do at {}".format(self.doc_link)
@@ -34,3 +46,9 @@ class Core:
         if context.match:
             await self.post_env_var(context.location,context.group(0),context.group(1))
             return Response("Got it!")
+        context.apply("reveal ([\w_]+)")
+        if context.match:
+            v = await self.get_env_var(context.location,context.group(0))
+            if v == None:
+                return Response("No SEV by that name exists!")
+            return Response("{} = {}".format(context.group(0),v))

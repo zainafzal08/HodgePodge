@@ -10,7 +10,7 @@ hodge     podge help               -> \[btf\] I have a nice list of what i can d
 !hp how do i use the core module   -> \[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html
 !hp how do i use anything          -> \[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html
 !hp how do i                       -> \[btf\] I have a nice list of what i can do at http://zainafzal08\.github\.io/HodgePodge/docs\.html
-!hp set a lol to b                 ->
+!hp set a lol to b                 -> ^$
 !hp set real_var to ha             -> Got it!
 !hp set real_var to ha space       -> Got it!
 !hp reveal real_var                -> ha space

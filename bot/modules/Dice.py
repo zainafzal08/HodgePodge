@@ -47,20 +47,18 @@ class Dice:
 
     async def multi_roll(self, grps, context):
         await self.save_roll(context.location,context.raw)
-        dice_num = grps[0]
-        dice_type = grps[1]
+        dice_num = int(grps[0])
+        dice_type = int(grps[1])
         mod,val=[None,None]
         if len(grps) > 2:
             mod,val = grps[2:]
+            val = int(val)
             if abs(val) > 100000:
                 return Response("Bit of a intense modifier, not sure i can handle a number like that. Sorry!")
-        dice_num = int(dice_num)
-        dice_type = int(dice_num)
         if dice_type < 2 or dice_type > 10000:
             return Response("How can you even have that many faces on a dice? Pick a reasonable dice please!")
         if dice_num < 1 or dice_num > 10000:
             return Response("That is not a amount of dice i can roll, be reasonable.")
-        val = int(val) if val else None
 
         rolls = [self.random_num(dice_type) for _ in range(dice_num)]
         total = sum(rolls)
@@ -75,19 +73,19 @@ class Dice:
         else:
             rolls = "({})".format(",".join(rolls))
         if dice_num > 20:
-            Response("I got {}!".format(total))
+            return Response("I got {}!".format(total))
         return Response("I got {}! The breakdown was {}".format(total,rolls))
 
     async def single_roll(self, grps, context):
         await self.save_roll(context.location,context.raw)
-        dice_type = grps[0]
+        dice_type = int(grps[0])
         mod,val=[None,None]
         if len(grps) > 1:
             mod,val = grps[1:]
+            val = int(val)
             if abs(val) > 100000:
                 return Response("Bit of a intense modifier, not sure i can handle a number like that. Sorry!")
-        dice_type = int(dice_type)
-        val = int(val) if val else None
+
         if dice_type < 2 or dice_type > 10000:
             return Response("How can you even have that many faces on a dice? Pick a reasonable dice please!")
 
@@ -97,8 +95,8 @@ class Dice:
         roll = og_roll
         if (mod != None and val != None):
             roll = roll + val if mod == "+" else roll - val
-        prefix = "{} ".format(miss) if (roll == 1) else ""
-        postfix = " {}".format(hit) if (roll == dice_type) else ""
+        prefix = "{} ".format(miss) if (og_roll == 1) else ""
+        postfix = " {}".format(hit) if (og_roll == dice_type) else ""
         modStr = " [{}{}{}]".format(og_roll,mod,val) if mod != None and val != None else ""
         msg = "{}I got {}{}!{}".format(prefix,roll,modStr,postfix)
         return Response(msg)
@@ -110,8 +108,8 @@ class Dice:
                 return Response("I don't know what you last rolled! Sorry!")
             context.message = lr
         chain = [
-            (".*roll.*(\d+).*d(\d+)[^\+\-]*([+\-][+\-]?)\s*(\d+)",self.multi_roll),
-            (".*roll.*(\d+).*d(\d+)",self.multi_roll),
+            (".*roll[^\d]*(\d+).*d(\d+)[^\+\-]*([+\-][+\-]?)\s*(\d+)",self.multi_roll),
+            (".*roll[^\d]*(\d+).*d(\d+)",self.multi_roll),
             (".*roll.*d(\d+).*([+\-])\s*(\d+)",self.single_roll),
             (".*roll.*d(\d+)",self.single_roll)
         ]

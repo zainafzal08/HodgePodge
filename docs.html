@@ -148,12 +148,80 @@
     <h2> Utility Module </h2>
     <h3> Decisions </h3>
     <p>
-      Hodge Podge can flip a coin, pick a random person in the chat,
-      or pick from a set of options randomly.
+      Hodge Podge can flip a coin or pick a random person in the chat.
+      Note when picking a random person hodge podge will tag that person.
+      This is useful for when you need to pick a random character to hex or hit in a battle.
     </p>
-    <h2> Math Module </h2>
-    <h3> Basic Use </h3>
-    <h3> Supported Operations </h3>
+    <cmds>
+      <c> Hodge Podge flip a coin </c>
+      <r> It landed on heads!</r>
+      <c> Hodge Podge pick someone </c>
+      <r> I am gonna point at <hl>@Travis</hl>!</r>
+    </cmds>
+    <p>
+      By default hodge podge treats all people in a channel equally no matter if they are online at the moment or not.
+    </p>
+    <h3> Conversions </h3>
+    <p>
+      To convert between feet and meters simply do
+    </p>
+    <cmds>
+      <c> Hodge Podge whats 14 feet in meters </c>
+      <r> It's 4.2672 meters!</r>
+      <c> Hodge Podge whats 4.2672 meters in feet </c>
+      <r> It's 14 feet!</r>
+    </cmds>
+    <p>
+      To convert between celcius and fahrenheit simply do
+    </p>
+    <cmds>
+      <c> Hodge Podge whats 14F in C</c>
+      <r> It's -10C!</r>
+      <c> Hodge Podge whats -10C in F</c>
+      <r> It's 14F!</r>
+    </cmds>
+    <h2> Scripting </h2>
+    <p> Ok so i am a bit crazy and look for any excuse to build a compiler
+      from scratch, So Hodge Podge comes with a very basic scripting engine which runs HodgeCode.
+      If you arn't a programmer this may seem useless but keep reading, it has
+      some usful features relevant to everyone! </p>
+
+    <h3> Math </h3>
+    <p> The scripting engine will evaluate any mathematical expression </p>
+    <cmds>
+      <c> Hodge Podge do 5+4</c>
+      <r> 9</r>
+      <c> !hp do 2^2 - 2 + 1</c>
+      <r> 3</r>
+    </cmds>
+    <p> Supported operations </p>
+    <table>
+      <tr>
+        <th> Operation </th>
+        <th> Precedence </th>
+        <th> Description </th>
+      </tr>
+      <tr>
+        <td> () </td>
+        <td> 1 </td>
+        <td> For grouping </td>
+      </tr>
+      <tr>
+        <td> ^ </td>
+        <td> 2 </td>
+        <td> Raise to the power of </td>
+      </tr>
+      <tr>
+        <td> * and / </td>
+        <td> 3 </td>
+        <td> Multply and Divide </td>
+      </tr>
+      <tr>
+        <td> + and - </td>
+        <td> 4 </td>
+        <td> Addition and Subtraction </td>
+      </tr>
+    </table>
     <h2> Nicknames </h2>
     <h3> Basic Use </h3>
     <h3> Persistance </h3>

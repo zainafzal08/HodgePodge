@@ -51,7 +51,7 @@ function backActivate(elems, i) {
   }
 }
 function scroll(){
-  let delta = elems.map(x=>x[1].offsetTop-main.scrollTop);
+  let delta = elems.map(x=>x[0].offsetTop-main.scrollTop);
   let i = 0;
   elems.map(x=>x[1].classList.remove("active"));
   while (i < elems.length) {

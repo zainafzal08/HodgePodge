@@ -166,3 +166,23 @@ main cmds r {
 main cmds r hl{
   color: #f15f79;
 }
+pre {
+  background-color: rgba(235,235,235,0.5);
+  border-radius: 10px;
+  width: 50%;
+  padding: 1rem;
+}
+main table {
+  width: 50%;
+  text-align: center;
+}
+main table th {
+  border-bottom: 2px solid #EBEBEB;
+  padding-bottom: 0.5rem;
+  color: #444;
+}
+main table td {
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+  color: #777;
+}

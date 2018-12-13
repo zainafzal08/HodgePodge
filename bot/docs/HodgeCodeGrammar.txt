@@ -1,0 +1,88 @@
+self.transformations = {
+  "E": ["T Q"],
+  "Q": ["+ T Q","- T Q","e"],
+  "T": ["F R"],
+  "R": ["* F R","/ F R","e"],
+  "F": ["N","( E )"],
+  "N": ["D I P"],
+  "I": ["D I","e"],
+  "P": [". I","e"],
+  "D": self.digits
+}
+
+
+1+1 becomes
+
+        ___ E ___
+       /        \
+      /          \
+     T            Q
+   /   \        / | \
+  F     R      +  T   Q
+  |     |        / \  |
+  N     e       F   R e
+ /|\            |   |
+D I P           N   e
+| | |          /|\
+1 e e         D I P
+              | | |
+              1 e e
+
+
+
+123.12 is
+
+  _____N_____
+ /   |       \
+ D   I        P
+ |  /  \     / \
+ 1 D    I   .   I
+   |   / \     / \
+   2  D   I   D   I
+      |   |   |  / \
+      3   e   1  D  I
+                 |  |
+                 2  e
+
+using rules
+N -> IDP PUSH 10 length P times DIV length P times ADD
+I -> (I)(D) PUSH 10 length I times mult length I times ADD
+e -> PUSH 0
+
+translates to
+# 3
+PUSH 0
+PUSH 3
+PUSH 1
+MULT
+ADD
+# 23
+PUSH 2
+PUSH 10
+MULT
+ADD
+# 123
+PUSH 1
+PUSH 10
+PUSH 10
+MULT
+MULT
+ADD
+#2
+PUSH 0
+PUSH 2
+PUSH 1
+MULT
+ADD
+# 12
+PUSH 1
+PUSH 10
+MULT
+ADD
+# 12 -> 0.12
+PUSH 10
+PUSH 10
+DIV
+DIV
+# 123 + .12
+ADD

@@ -130,7 +130,10 @@
         <r> I got 11! The breakdown was (2[+3],3[+3]) </r>
       </cmds>
     </p>
-    <p> This is actually just using a server variable called <code> LAST_ROLL </code> </p>
+    <p> This is actually just using a server variable called <code> last_roll </code>
+      to remember the last thing you rolled. You can manually override it and look at it
+      but do so at your own risk. malforming it will cause "reroll" to fail.
+    </p>
     <h3> Custom Responses </h3>
     <p>
       When hodge podge rolls a critical miss or a critical hit for a single dice
@@ -197,41 +200,38 @@
       some usful features relevant to everyone! </p>
 
     <h3> Math </h3>
-    <p> The scripting engine will evaluate any mathematical expression </p>
+    <p> The scripting engine will evaluate any mathematical expression involving standard BODMAS </p>
     <cmds>
       <c> Hodge Podge do 5+4</c>
       <r> 9</r>
-      <c> !hp do 2^2 - 2 + 1</c>
+      <c> !hp do 2*2 - 2 + 1</c>
       <r> 3</r>
     </cmds>
-    <p> Supported operations </p>
-    <table>
-      <tr>
-        <th> Operation </th>
-        <th> Precedence </th>
-        <th> Description </th>
-      </tr>
-      <tr>
-        <td> () </td>
-        <td> 1 </td>
-        <td> For grouping </td>
-      </tr>
-      <tr>
-        <td> ^ </td>
-        <td> 2 </td>
-        <td> Raise to the power of </td>
-      </tr>
-      <tr>
-        <td> * and / </td>
-        <td> 3 </td>
-        <td> Multply and Divide </td>
-      </tr>
-      <tr>
-        <td> + and - </td>
-        <td> 4 </td>
-        <td> Addition and Subtraction </td>
-      </tr>
-    </table>
+
+    <h3> Dice </h3>
+    <p>
+      You can slip dice rolls into your mathematical equations,
+      hodge podge will roll a dice and replace the result into your equation.
+      <cmds>
+        <c> !hp do d20+4-2*2</c>
+        <r> 2 </r>
+      </cmds>
+    </p>
+    <h3> Variables </h3>
+    <p>
+      Hodge Code can also access your server variables which lets you do some cool stuff
+      like save variables relevant to play
+      <cmds>
+        <c> !hp set orc_bonus_damage to 8</c>
+        <r> Got it! </r>
+        <c> !hp do d6+orc_bonus_damage </c>
+        <r> 10 </r>
+      </cmds>
+    </p>
+    <h3> Collections / Looping </h3>
+    <p>
+      Coming soon! Maybe! Not sure if i wanna write a full tokeniser just yet.
+    </p>
     <h2> Nicknames </h2>
     <h3> Basic Use </h3>
     <h3> Persistance </h3>

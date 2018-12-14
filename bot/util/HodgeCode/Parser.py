@@ -1,7 +1,19 @@
+import math
+import re
+
 class Scanner:
     def __init__(self, raw):
         self.raw = raw
+        self.build_symbol_table()
         self.pos = 0
+    def build_symbol_table(self):
+        self.symbol_table = []
+        vars = re.findall("[a-z][a-z_]+",self.raw,flags=re.IGNORECASE)
+        for var in vars:
+            self.symbol_table.append(var)
+            i = len(self.symbol_table)-1
+            self.raw = re.sub(var,"r{}".format(i),self.raw,flags=re.IGNORECASE)
+
     def done(self):
         return self.pos >= len(self.raw)
     def next(self):

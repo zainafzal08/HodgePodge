@@ -5,9 +5,10 @@ from loggers import hodge_logger
 from util.Context import Context
 from modules.Core import Core
 from modules.Dice import Dice
+from modules.HodgeCode import HodgeCode
 
 client = discord.Client()
-call_chain = [Dice(),Core()]
+call_chain = [Dice(),HodgeCode(), Core()]
 
 @client.event
 async def on_ready():

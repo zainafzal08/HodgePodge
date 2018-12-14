@@ -5,9 +5,10 @@ from util.Context import Context
 from util.Message_Wrapper import Message_Wrapper
 from modules.Core import Core
 from modules.Dice import Dice
+from modules.HodgeCode import HodgeCode
 import asyncio
 
-call_chain = [Dice(),Core()]
+call_chain = [Dice(),HodgeCode(),Core()]
 
 async def simulate_message(message):
     context = Context(Message_Wrapper(message))

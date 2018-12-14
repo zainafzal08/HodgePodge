@@ -11,7 +11,9 @@ class Emitter:
           "N": self.emit_N,
           "I": self.emit_I,
           "P": self.emit_P,
-          "D": self.emit_D
+          "D": self.emit_D,
+          "A": self.emit_A,
+          "V": self.emit_V
         }
     def code(self, l):
         if type(l) is str:
@@ -30,8 +32,8 @@ class Emitter:
         if (len(r.children) == 1):
             return
         self.emit(r.children[1])
-        self.emit(r.children[2])
         self.code("ADD") if r.children[0].title == "+" else self.code("SUB")
+        self.emit(r.children[2])
     def emit_T(self, r):
         self.emit(r.children[0])
         self.emit(r.children[1])
@@ -39,8 +41,8 @@ class Emitter:
         if len(r.children) == 1:
             return
         self.emit(r.children[1])
-        self.emit(r.children[2])
         self.code("MULT") if r.children[0].title == "*" else self.code("DIV")
+        self.emit(r.children[2])
     def emit_F(self, r):
         if len(r.children) == 1:
             self.emit(r.children[0])
@@ -73,4 +75,17 @@ class Emitter:
         self.emit(r.children[1])
         r.length = r.children[1].length
     def emit_D(self, r):
+        if len(r.children) == 1:
+            self.emit(r.children[0])
+        else:
+            self.emit(r.children[1])
+            self.code("ROLL")
+    def emit_A(self, r):
         self.code("PUSH "+r.children[0].title)
+    def emit_V(self, r):
+        self.emit(r.children[2])
+        self.emit(r.children[1])
+        self.code(["PUSH 10"]*r.children[2].length)
+        self.code(["MULT"]*r.children[2].length)
+        self.code("ADD")
+        self.code("LDV")

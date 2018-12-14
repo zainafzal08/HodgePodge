@@ -125,11 +125,11 @@ describe('Bot tests - core', function() {
 describe('Bot tests - dice', function() {
     it('!hp roll a d2',function(){
         let r = new RegExp(String.raw`(^\[btf\] oof\. I got [12]!$)|(^\[btf\] I got [12]! Nice!$)`)
-        chai.expect("[btf] oof. I got 1!").to.match(r);
+        chai.expect("[btf] I got 2! Nice!").to.match(r);
     });
     it('!hp roll a d20',function(){
         let r = new RegExp(String.raw`(^\[btf\] I got ([12][0-9]|[1-9])!$)|(^\[btf\] oof. I got 1!$)|(^\[btf\] I got 20! Nice!$)`)
-        chai.expect("[btf] I got 11!").to.match(r);
+        chai.expect("[btf] I got 2!").to.match(r);
     });
     it('!hp roll a d10001',function(){
         let r = new RegExp(String.raw`\[btf\] How can you even have that many faces on a dice\? Pick a reasonable dice please!`)
@@ -153,7 +153,7 @@ describe('Bot tests - dice', function() {
     });
     it('!hp roll a d2 -1',function(){
         let r = new RegExp(String.raw`(^\[btf\] oof\. I got 0 \[1\-1\]!$)|(^\[btf\] I got 1 \[2\-1\]! Nice!$)`)
-        chai.expect("[btf] oof. I got 0 [1-1]!").to.match(r);
+        chai.expect("[btf] I got 1 [2-1]! Nice!").to.match(r);
     });
     it('!hp roll a d2 +100001',function(){
         let r = new RegExp(String.raw`Bit of a intense modifier, not sure i can handle a number like that\. Sorry!`)
@@ -189,7 +189,7 @@ describe('Bot tests - dice', function() {
     });
     it('!hp reroll',function(){
         let r = new RegExp(String.raw`(^\[btf\] A I got [12]!$)|(^\[btf\] I got [12]! B$)`)
-        chai.expect("[btf] I got 2! B").to.match(r);
+        chai.expect("[btf] A I got 1!").to.match(r);
     });
     it('!hp set critical_hit_msg to Nice!',function(){
         let r = new RegExp(String.raw`Got it!`)
@@ -201,30 +201,108 @@ describe('Bot tests - dice', function() {
     });
     it('!hp roll 1 d5',function(){
         let r = new RegExp(String.raw`I got [1-5]! The breakdown was \([1-5]\)`)
-        chai.expect("[btf] I got 3! The breakdown was (3)").to.match(r);
+        chai.expect("[btf] I got 1! The breakdown was (1)").to.match(r);
     });
     it('!hp roll 5 d5',function(){
         let r = new RegExp(String.raw`I got (2[0-5])|(1[0-9])|([1-9])! The breakdown was \(([1-5],){4}[1-5]\)`)
-        chai.expect("[btf] I got 13! The breakdown was (4,1,3,4,1)").to.match(r);
+        chai.expect("[btf] I got 19! The breakdown was (3,4,3,4,5)").to.match(r);
     });
     it('!hp roll 21 d5',function(){
         let r = new RegExp(String.raw`^\[btf\] I got \d+!$`)
-        chai.expect("[btf] I got 57!").to.match(r);
+        chai.expect("[btf] I got 63!").to.match(r);
     });
     it('!hp roll 2 d2',function(){
         let r = new RegExp(String.raw`^\[btf\] I got [234]! The breakdown was \([12],[12]\)$`)
-        chai.expect("[btf] I got 3! The breakdown was (2,1)").to.match(r);
+        chai.expect("[btf] I got 3! The breakdown was (1,2)").to.match(r);
     });
     it('!hp reroll',function(){
         let r = new RegExp(String.raw`^\[btf\] I got [234]! The breakdown was \([12],[12]\)$`)
-        chai.expect("[btf] I got 2! The breakdown was (1,1)").to.match(r);
+        chai.expect("[btf] I got 4! The breakdown was (2,2)").to.match(r);
     });
     it('!hp roll 2 d3 ++1',function(){
         let r = new RegExp(String.raw`I got [4-8]! The breakdown was \([1-3]\[\+1\],[1-3]\[\+1\]\)`)
-        chai.expect("[btf] I got 6! The breakdown was (3[+1],1[+1])").to.match(r);
+        chai.expect("[btf] I got 8! The breakdown was (3[+1],3[+1])").to.match(r);
     });
     it('!hp roll 2 d3 +1',function(){
         let r = new RegExp(String.raw`I got [3-7]! The breakdown was \([1-3],[1-3]\)\[\+1\]`)
-        chai.expect("[btf] I got 6! The breakdown was (3,2)[+1]").to.match(r);
+        chai.expect("[btf] I got 4! The breakdown was (2,1)[+1]").to.match(r);
+    });
+});
+describe('Bot tests - hodgecode', function() {
+    it('!hp do 1+1',function(){
+        let r = new RegExp(String.raw`2`)
+        chai.expect("[btf] 2").to.match(r);
+    });
+    it('!hp do 1+1-1+1-1',function(){
+        let r = new RegExp(String.raw`1`)
+        chai.expect("[btf] 1").to.match(r);
+    });
+    it('!hp do 234+1',function(){
+        let r = new RegExp(String.raw`235`)
+        chai.expect("[btf] 235").to.match(r);
+    });
+    it('!hp do 1.0+1',function(){
+        let r = new RegExp(String.raw`2`)
+        chai.expect("[btf] 2").to.match(r);
+    });
+    it('!hp do 1.0+2.0',function(){
+        let r = new RegExp(String.raw`3`)
+        chai.expect("[btf] 3").to.match(r);
+    });
+    it('!hp do 1+1*2-9*1+2-123',function(){
+        let r = new RegExp(String.raw`-127`)
+        chai.expect("[btf] -127").to.match(r);
+    });
+    it('!hp do 1+1*2-9/1+2-123',function(){
+        let r = new RegExp(String.raw`-127`)
+        chai.expect("[btf] -127").to.match(r);
+    });
+    it('!hp do 1/2',function(){
+        let r = new RegExp(String.raw`0.5`)
+        chai.expect("[btf] 0.5").to.match(r);
+    });
+    it('!hp do 1/3',function(){
+        let r = new RegExp(String.raw`0.33333333`)
+        chai.expect("[btf] 0.33333333").to.match(r);
+    });
+    it('!hp do 1.0/3',function(){
+        let r = new RegExp(String.raw`0.33333333`)
+        chai.expect("[btf] 0.33333333").to.match(r);
+    });
+    it('!hp do 0',function(){
+        let r = new RegExp(String.raw`0`)
+        chai.expect("[btf] 0").to.match(r);
+    });
+    it('!hp do 1.0',function(){
+        let r = new RegExp(String.raw`1`)
+        chai.expect("[btf] 1").to.match(r);
+    });
+    it('!hp do 3',function(){
+        let r = new RegExp(String.raw`3`)
+        chai.expect("[btf] 3").to.match(r);
+    });
+    it('!hp do 100+0',function(){
+        let r = new RegExp(String.raw`100`)
+        chai.expect("[btf] 100").to.match(r);
+    });
+    it('!hp do 100+d2',function(){
+        let r = new RegExp(String.raw`10[12]`)
+        chai.expect("[btf] 101").to.match(r);
+    });
+    it('!hp do d3',function(){
+        let r = new RegExp(String.raw`[123]`)
+        chai.expect("[btf] 1").to.match(r);
+    });
+    it('!hp do d8+2-1',function(){
+        let r = new RegExp(String.raw`[2-9]`)
+        chai.expect("[btf] 3").to.match(r);
+    });
+    it('!hp do d2*4',function(){
+        let r = new RegExp(String.raw`[48]`)
+        chai.expect("[btf] 4").to.match(r);
+    });
+    it('!hp do d2/2',function(){
+        let r = new RegExp(String.raw`1|(0\.5)`)
+        chai.expect("[btf] 0.5").to.match(r);
     });
 });

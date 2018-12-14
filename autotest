@@ -1,5 +1,5 @@
 #!/bin/bash
-runApi="cd api; source env/bin/activate; gunicorn --reload app:api; exec bash"
+runApi="cd api; source env/bin/activate; gunicorn --reload app:api"
 tmux new-session -s "master" -d "$runApi"
 source bot/env/bin/activate
 t="tests/tests.js"

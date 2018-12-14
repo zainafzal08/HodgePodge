@@ -1,4 +1,5 @@
-0. add modifier tests
-1. refactor cycle + add more to docs!
-3. implement above features
-4. refactor cycle + more tests
+
+1. refactor cycle
+2. update docs
+3. add hodge code tests for env. variables
+4. get beta version to prod

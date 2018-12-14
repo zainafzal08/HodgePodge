@@ -15,15 +15,17 @@ class Grammar:
           "Q": ["+ T Q","- T Q","e"],
           "T": ["F R"],
           "R": ["* F R","/ F R","e"],
-          "F": ["N","( E )"],
+          "F": ["N","V","( E )"],
           "N": ["D I P"],
           "I": ["D I","e"],
           "P": [". I","e"],
-          "D": self.digits
+          "D": ["d A","A"],
+          "A": self.digits,
+          "V": ["r D I"]
         }
         self.root = "E"
         self.ignore = [" ","\t","\n"]
-        self.terminals = ["+","-","(",")",".","*","/"] + self.digits
+        self.terminals = ["+","-","(",")",".","*","/","d","r"] + self.digits
         self.calculate_sets()
 
     def calculate_sets(self):

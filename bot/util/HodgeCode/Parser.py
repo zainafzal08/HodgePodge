@@ -12,7 +12,7 @@ class Scanner:
         for var in vars:
             self.symbol_table.append(var)
             i = len(self.symbol_table)-1
-            self.raw = re.sub(var,"r{}".format(i),self.raw,flags=re.IGNORECASE)
+            self.raw = re.sub(var,"r{}".format(i),self.raw)
 
     def done(self):
         return self.pos >= len(self.raw)

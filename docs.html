@@ -59,9 +59,18 @@
       or allowed ranges. See the dice module for a example. These variables are server wide and can be updated by doing
       <cmds>
         <c> Hodge Podge set X to Y</c>
+        <r> Got it! </r>
       </cmds>
-      X must be a variable name and as such is 1 word and snake cake i.e <code>critical_hit_msg</code>
+      X must be a variable name and as such is 1 word and snake cake i.e
+       <code>critical_hit_msg</code>. The first letter of the varibale must
+       not be a underscore, the allowed characters for a variable is any
+       character a-z and A-Z + the underscore.
     </p>
+    <p> You can reveal a server variable via the <code> reveal </code> command </p>
+    <cmds>
+      <c> Hodge Podge reveal X</c>
+      <r> X = Y </r>
+    </cmds>
     <h3> Personality </h3>
     <p>
       Hodge Podge will respond to some things such as <code> Hodge Podge i love you </code>.
@@ -121,6 +130,7 @@
         <r> I got 11! The breakdown was (2[+3],3[+3]) </r>
       </cmds>
     </p>
+    <p> This is actually just using a server variable called <code> LAST_ROLL </code> </p>
     <h3> Custom Responses </h3>
     <p>
       When hodge podge rolls a critical miss or a critical hit for a single dice

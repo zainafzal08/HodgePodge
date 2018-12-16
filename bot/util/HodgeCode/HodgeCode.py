@@ -14,7 +14,12 @@ async def run_eq(s, server):
     e = Emitter(g)
     vm = VM(p.scanner.symbol_table)
     e.emit(p.root)
-    await vm.run(e.code_mem, server)
+    try:
+        await vm.run(e.code_mem, server)
+    except ZeroDivisionError as e:
+        return "_Bzzt_ Attempted Division by zero!"
+    except Exception as e:
+        return "_Bzzt_ Something went wrong evaulating that statement! Are you sure it's correctly formed?"
     v = vm.stack.pop()
     if type(v) == float and v-int(v) == 0:
         return int(v)

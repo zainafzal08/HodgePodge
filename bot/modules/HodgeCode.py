@@ -8,4 +8,4 @@ class HodgeCode:
     async def message(self, context):
         context.apply("do (.*)")
         if context.match:
-            return Response(await run_eq(context.group(0), context.location))
+            return Response(await run_eq(context.group(0), context.server))

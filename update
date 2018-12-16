@@ -1,6 +1,7 @@
 #!/bin/bash
 
 log="/home/ec2-user/hodge_log"
+cd "/home/ec2-user/HodgePodge"
 touch $log
 d=`date`; echo "[$d] Checking for any updates to prod branch..." >> $log
 git remote update >> $log

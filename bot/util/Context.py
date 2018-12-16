@@ -9,7 +9,7 @@ def preprocess(s):
 class Context:
     def __init__(self, message):
         self.message = preprocess(message.content)
-        self.location = message.channel
+        self.location = str(message.channel)
         self._message = message
         self.groups = None
         self.match = False

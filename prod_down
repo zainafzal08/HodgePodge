@@ -1,4 +1,5 @@
 #!/bin/bash
 
 tmux send-keys -t "master" C-c
+sleep 1s
 tmux send-keys -t "master" C-c

@@ -2,12 +2,13 @@
 
 log="/home/ec2-user/hodge_log"
 touch $log
-git remote update
+d=`date`; echo "[$d] Checking for any updates to prod branch..." >> $log
+git remote update >> $log
 status=`git status -uno | grep 'behind'`
 if [ -z "$status" ]; then
 	exit 0;
 fi
-d=`date`; echo "[$d] prod branch update signal recieved" >> $log
+d=`date`; echo "[$d] prod branch has been updated, Initiating Redeploy" >> $log
 d=`date`; echo "[$d] Shutting down" >> $log
 ./prod_down >> $log
 d=`date`; echo "[$d] Updating Code" >> $log

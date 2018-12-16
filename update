@@ -1,3 +1,16 @@
-#!/bin/bash 
+#!/bin/bash
 
+log="/home/ec2-user/hodge_log"
+touch $log
 git remote update
+status=`git status -uno | grep 'behind'`
+if [ -z "$status" ]; then
+	exit 0;
+fi
+d=`date`; echo "[$d] prod branch update signal recieved" >> $log
+d=`date`; echo "[$d] Shutting down" >> $log
+./prod_down >> $log
+d=`date`; echo "[$d] Updating Code" >> $log
+git pull origin prod >> $log
+d=`date`; echo "[$d] Relaunching" >> $log
+./prod_up >> $log

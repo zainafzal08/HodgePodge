@@ -1,0 +1,4 @@
+#!/bin/bash
+
+tmux send-keys -t "master" C-c
+tmux send-keys -t "master" C-c

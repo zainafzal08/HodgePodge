@@ -44,11 +44,11 @@ class Core:
             return Response(msg)
         context.apply("set ([\w_]+) to (.*)")
         if context.match:
-            await self.post_env_var(context.location,context.group(0),context.group(1))
+            await self.post_env_var(context.server,context.group(0),context.group(1))
             return Response("Got it!")
         context.apply("reveal ([\w_]+)")
         if context.match:
-            v = await self.get_env_var(context.location,context.group(0))
+            v = await self.get_env_var(context.server,context.group(0))
             if v == None:
                 return Response("No SEV by that name exists!")
             return Response("{} = {}".format(context.group(0),v))

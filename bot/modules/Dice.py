@@ -46,7 +46,7 @@ class Dice:
                 dice_module_logger.info(l)
 
     async def multi_roll(self, grps, context):
-        await self.save_roll(context.location,context.raw)
+        await self.save_roll(context.server+context.location,context.raw)
         dice_num = int(grps[0])
         dice_type = int(grps[1])
         mod,val=[None,None]
@@ -77,7 +77,7 @@ class Dice:
         return Response("I got {}! The breakdown was {}".format(total,rolls))
 
     async def single_roll(self, grps, context):
-        await self.save_roll(context.location,context.raw)
+        await self.save_roll(context.server+context.location,context.raw)
         dice_type = int(grps[0])
         mod,val=[None,None]
         if len(grps) > 1:
@@ -103,7 +103,7 @@ class Dice:
 
     async def message(self, context):
         if context.message == "!hp reroll":
-            lr = await self.get_env_var(context.location, "last_roll")
+            lr = await self.get_env_var(context.server+context.location, "last_roll")
             if lr == None:
                 return Response("I don't know what you last rolled! Sorry!")
             context.message = lr
